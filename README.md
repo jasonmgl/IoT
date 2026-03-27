@@ -20,12 +20,12 @@ The goal is to simulate a lightweight infrastructure close to an **edge computin
 ---
 
 ## ⚙️ Project Structure
-
+```
 .
 ├── p1/  # K3s + Vagrant (multi-node cluster)
 ├── p2/  # K3s + 3 applications + Ingress
 └── p3/  # (Work in progress)
-
+```
 ---
 
 # 🧩 Part 1 — K3s & Vagrant
@@ -35,7 +35,7 @@ The goal is to simulate a lightweight infrastructure close to an **edge computin
 This part consists of setting up a **2-node Kubernetes cluster** using **K3s** inside virtual machines managed by **Vagrant**.
 
 ## 🏗️ Architecture
-
+```
 Host Machine
    │
    ├── VM 1 (Server / Control Plane)
@@ -43,7 +43,7 @@ Host Machine
    │
    └── VM 2 (Worker)
          └── K3s Agent
-
+```
 ## ⚙️ Configuration
 
 - **VMs created with Vagrant**
@@ -114,13 +114,13 @@ Each application includes:
 ---
 
 ## 🌍 Routing Logic
-
+```
 | Host        | Target App |
 |------------|-----------|
 | app1.com   | app1      |
 | app2.com   | app2      |
 | other      | app3      |
-
+```
 ## ⚡ Example Flow
 ```
 Request → 192.168.56.110
