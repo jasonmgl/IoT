@@ -130,7 +130,8 @@ Ingress
         ↓
 Service app2
         ↓
-Pods (3 replicas)```
+Pods (3 replicas)
+```
 
 ---
 
