@@ -1,6 +1,6 @@
-# Inception of Things (IoT) 🚀
+# Inception of Things (IoT)
 
-## 📖 Overview
+## Overview
 
 This project is part of the 42 curriculum and aims to introduce Kubernetes concepts through practical implementation using **K3s**, **Vagrant**, and **containerized applications**.
 
@@ -8,7 +8,7 @@ The goal is to simulate a lightweight infrastructure close to an **edge computin
 
 ---
 
-## 🧠 Objectives
+## Objectives
 
 - Understand Kubernetes fundamentals
 - Deploy a lightweight cluster using **K3s**
@@ -19,7 +19,7 @@ The goal is to simulate a lightweight infrastructure close to an **edge computin
 
 ---
 
-## ⚙️ Project Structure
+## Project Structure
 ```
 .
 ├── p1/  # K3s + Vagrant (multi-node cluster)
@@ -28,13 +28,13 @@ The goal is to simulate a lightweight infrastructure close to an **edge computin
 ```
 ---
 
-# 🧩 Part 1 — K3s & Vagrant
+# Part 1 — K3s & Vagrant
 
-## 📌 Description
+## Description
 
 This part consists of setting up a **2-node Kubernetes cluster** using **K3s** inside virtual machines managed by **Vagrant**.
 
-## 🏗️ Architecture
+## Architecture
 ```
 Host Machine
    │
@@ -44,7 +44,7 @@ Host Machine
    └── VM 2 (Worker)
          └── K3s Agent
 ```
-## ⚙️ Configuration
+## Configuration
 
 - **VMs created with Vagrant**
 - Minimal resources:
@@ -55,21 +55,21 @@ Host Machine
   - `192.168.56.111` → Worker
 - SSH access without password
 
-## 🚀 Implementation
+## Implementation
 
-### 🔹 K3s Server
+### K3s Server
 - Installed in **control plane mode**
 - Initializes the cluster
 
-### 🔹 K3s Agent
+### K3s Agent
 - Joins the cluster using a **token**
 - Executes workloads (pods)
 
-### 🔹 Tools used
+### Tools used
 - `kubectl` for cluster management
 - Shell provisioning via Vagrant
 
-## ✅ Result
+## Result
 
 - Functional multi-node Kubernetes cluster
 - Nodes successfully connected and visible via:
@@ -78,19 +78,19 @@ kubectl get nodes
 
 ---
 
-# 🌐 Part 2 — K3s & Applications
+# Part 2 — K3s & Applications
 
-## 📌 Description
+## Description
 
 This part focuses on deploying **three web applications** inside the K3s cluster and exposing them using **Ingress routing**.
 
-## 🏗️ Architecture
+## Architecture
 
 Client → Ingress → Service → Pods (Deployment)
 
-## 🚀 Implementation
+## Implementation
 
-### 🔹 Applications
+### Applications
 
 Three applications are deployed:
 
@@ -98,7 +98,7 @@ Three applications are deployed:
 - `app2` (with 3 replicas)
 - `app3` (default)
 
-### 🔹 Kubernetes Resources
+### Kubernetes Resources
 
 Each application includes:
 
@@ -113,7 +113,7 @@ Each application includes:
 
 ---
 
-## 🌍 Routing Logic
+## Routing Logic
 ```
 | Host        | Target App |
 |------------|-----------|
@@ -121,7 +121,7 @@ Each application includes:
 | app2.com   | app2      |
 | other      | app3      |
 ```
-## ⚡ Example Flow
+## Example Flow
 ```
 Request → 192.168.56.110
 Host: app2.com
@@ -135,7 +135,7 @@ Pods (3 replicas)
 
 ---
 
-## 🧪 Key Features
+## Key Features
 
 - Multi-application deployment
 - Load balancing (replicas)
@@ -144,7 +144,7 @@ Pods (3 replicas)
 
 ---
 
-## ⚠️ Challenges Faced
+## Challenges Faced
 
 - Ingress configuration and routing
 - Service-to-pod communication
@@ -153,7 +153,7 @@ Pods (3 replicas)
 
 ---
 
-## 🛠️ DevOps Practices
+## DevOps Practices
 
 - Infrastructure as Code (Vagrant)
 - Containerization (Docker)
@@ -162,7 +162,7 @@ Pods (3 replicas)
 
 ---
 
-## 🚧 Part 3 (Work in Progress)
+## Part 3 (Work in Progress)
 
 Part 3 will introduce:
 
@@ -172,7 +172,7 @@ Part 3 will introduce:
 
 ---
 
-## 💡 Key Learnings
+## Key Learnings
 
 - Difference between Pods, Services, and Ingress
 - Kubernetes networking basics
@@ -180,12 +180,4 @@ Part 3 will introduce:
 - Importance of readiness and deployment stability
 - Real-world DevOps workflow simulation
 
----
-
-## 📎 Author
-
-**Jason Mougel**
-
-- GitHub: https://github.com/jasonmgl
-- LinkedIn: Jason MOUGEL
 
