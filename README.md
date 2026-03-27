@@ -49,7 +49,7 @@ Host Machine
 - **VMs created with Vagrant**
 - Minimal resources:
   - 1 CPU
-  - 512 MB RAM
+  - 1024 MB RAM
 - Static IPs:
   - `192.168.56.110` → Server
   - `192.168.56.111` → Worker
@@ -85,8 +85,24 @@ kubectl get nodes
 This part focuses on deploying **three web applications** inside the K3s cluster and exposing them using **Ingress routing**.
 
 ## Architecture
+```
+Host Machine
+   │
+   └── VM 1 (Server / Control Plane)
+       └── K3s Server/Worker
 
 Client → Ingress → Service → Pods (Deployment)
+```
+
+## Configuration
+
+- **VM created with Vagrant**
+- Minimal resources:
+  - 1 CPU
+  - 1024 MB RAM
+- Static IPs:
+  - `192.168.56.110` → Server/Worker
+- SSH access without password
 
 ## Implementation
 
@@ -132,52 +148,5 @@ Service app2
         ↓
 Pods (3 replicas)
 ```
-
----
-
-## Key Features
-
-- Multi-application deployment
-- Load balancing (replicas)
-- Host-based routing with Ingress
-- Internal networking via Services
-
----
-
-## Challenges Faced
-
-- Ingress configuration and routing
-- Service-to-pod communication
-- Debugging networking issues
-- Ensuring pods readiness before access
-
----
-
-## DevOps Practices
-
-- Infrastructure as Code (Vagrant)
-- Containerization (Docker)
-- Orchestration (Kubernetes / K3s)
-- Declarative configuration (YAML manifests)
-
----
-
-## Part 3 (Work in Progress)
-
-Part 3 will introduce:
-
-- **K3d (Kubernetes in Docker)**
-- **Argo CD (GitOps)**
-- Continuous deployment pipelines
-
----
-
-## Key Learnings
-
-- Difference between Pods, Services, and Ingress
-- Kubernetes networking basics
-- Cluster setup and node communication
-- Importance of readiness and deployment stability
-- Real-world DevOps workflow simulation
 
 
