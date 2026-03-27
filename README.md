@@ -122,7 +122,7 @@ Each application includes:
 | other      | app3      |
 
 ## ⚡ Example Flow
-
+```
 Request → 192.168.56.110
 Host: app2.com
         ↓
@@ -130,7 +130,7 @@ Ingress
         ↓
 Service app2
         ↓
-Pods (3 replicas)
+Pods (3 replicas)```
 
 ---
 
@@ -188,11 +188,3 @@ Part 3 will introduce:
 - GitHub: https://github.com/jasonmgl
 - LinkedIn: Jason MOUGEL
 
----
-
-## 🚀 Future Improvements
-
-- CI/CD pipeline integration
-- Monitoring (Prometheus / Grafana)
-- Logging system
-- Security hardening
