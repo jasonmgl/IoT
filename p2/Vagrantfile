@@ -1,0 +1,32 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  NODES = [
+    { 
+      :hostname => "jmougelS",
+      :ip => "192.168.56.110",
+      :memory => "1024",
+      :cpus => 1,
+      :gui => false, :name => "jmougel",
+      :box => "bento/ubuntu-24.04",
+      :script_path => "./scripts/install_server.sh",
+    }
+  ]
+
+  NODES.each do |node|
+    config.vm.define node[:hostname] do |s|
+      s.vm.hostname = node[:hostname]
+      s.vm.box = node[:box]
+      s.vm.network "private_network", ip: node[:ip]
+      s.vm.provider "virtualbox" do |vb|
+        vb.memory = node[:memory]
+        vb.cpus = node[:cpus]
+        vb.name = node[:name]
+        vb.gui = node[:gui]
+      end
+      s.vm.provision "shell", path: node[:script_path], run: "always"
+    end
+  end
+end
