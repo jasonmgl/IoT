@@ -148,5 +148,4 @@ Service app2
         ↓
 Pods (3 replicas)
 ```
-
-
+with @klombard & @mmorot.
