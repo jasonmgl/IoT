@@ -7,9 +7,9 @@ provision:
 	@vagrant provision
 
 down:
-	@vagrant halte
+	@vagrant halt
 
-clean:
+clean: down
 	@rm -rf ./.node-token
 
 fclean: clean
@@ -19,4 +19,4 @@ fclean: clean
 help:
 	@tail -n 1 ./Makefile |  sed -e 's/.PHONY:/Commands:/g'
 
-.PHONY: fclean clean up down provision help
+.PHONY: fclean clean up down provision re help

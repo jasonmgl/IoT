@@ -3,27 +3,24 @@
 
 Vagrant.configure("2") do |config|
 
+  config.vm.boot_timeout = 600
+  config.vm.box = "bento/ubuntu-24.04"
+
   NODES = [
     { 
       :hostname => "jmougelS",
       :ip => "192.168.56.110",
-      :memory => "1024",
+      :memory => "2048",
       :cpus => 1,
-      :gui => false,
       :name => "jmougel",
-      :box => "boxen/debian-13",
-      :box_version => "2025.08.20.12",
       :script_path => "./scripts/install_server.sh",
     },
     { 
       :hostname => "jmougelSW",
       :ip => "192.168.56.111",
-      :memory => "1024",
+      :memory => "2048",
       :cpus => 1,
-      :gui => false,
       :name => "klombard",
-      :box => "boxen/debian-13",
-      :box_version => "2025.08.20.12",
       :script_path => "./scripts/install_worker.sh",
     }
   ]
@@ -31,15 +28,12 @@ Vagrant.configure("2") do |config|
   NODES.each do |node|
     config.vm.define node[:hostname] do |s|
       s.vm.hostname = node[:hostname]
-      s.vm.box = node[:box]
-      s.vm.box_version = node[:box_version]
       s.vm.network "private_network", ip: node[:ip]
 
       s.vm.provider "virtualbox" do |vb|
         vb.memory = node[:memory]
         vb.cpus = node[:cpus]
         vb.name = node[:name]
-        vb.gui = node[:gui]
       end
 
       s.vm.provision "shell", path: node[:script_path], run: "always"

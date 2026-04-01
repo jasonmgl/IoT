@@ -1,17 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+
 export DEBIAN_FRONTEND=noninteractive
 
 TOKEN_PATH="/var/lib/rancher/k3s/server/node-token"
 OUT_PATH="/vagrant/.node-token"
 
 apt-get update -qq
-if command -v curl >/dev/null 2>&1; then
-    echo "curl is already installed"
-else
-    apt-get install -y curl
-fi
+apt-get install -y curl
 
 if command -v k3s >/dev/null 2>&1; then
-    echo "k3s is already installed on this system."
+    echo "k3s is already installed"
 else
     curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server" sh -s - \
         --write-kubeconfig-mode 644 \
