@@ -5,16 +5,16 @@ export DEBIAN_FRONTEND=noninteractive
 
 launchPodAndService () {
     if ! kubectl get pod --ignore-not-found | grep -q "app$1"; then
-        kubectl apply -f /vagrant/pods/app$1/app$1.yaml
+        kubectl apply -f /vagrant/confs/app$1/deployment.yaml
         sleep 1
-        kubectl apply -f /vagrant/pods/app$1/app$1-service.yaml
+        kubectl apply -f /vagrant/confs/app$1/service.yaml
         sleep 1
     fi
 }
 
 launchIngress () {
     if ! kubectl get ingress --ignore-not-found | grep -q "apps"; then
-        kubectl apply -f /vagrant/pods/apps-ingress.yaml
+        kubectl apply -f /vagrant/confs/ingress/ingress.yaml
         sleep 1
     fi
 }

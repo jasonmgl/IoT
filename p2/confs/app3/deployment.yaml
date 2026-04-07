@@ -13,7 +13,7 @@ spec:
         app: app3
     spec:
       containers:
-      - name: app3-container
+      - name: app3
         image: paulbouwer/hello-kubernetes:1
         ports:
           - containerPort: 8080
