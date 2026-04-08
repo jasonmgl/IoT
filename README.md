@@ -24,8 +24,8 @@ Each part introduces new concepts and tools.
 ### Installation
 
 ```bash
-git clone https://github.com/jasonmgl/IoT
-cd IoT
+git clone https://github.com/jasonmgl/InceptionOfThings
+cd InceptionOfThings
 ```
 
 Make sure the following tools are installed on your system:

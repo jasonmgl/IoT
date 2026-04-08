@@ -29,8 +29,8 @@ Part 1 of the project consists of creating and provisioning a cluster of two vir
 ### Installation
 
 ```bash
-git clone https://github.com/jasonmgl/IoT
-cd IoT/p1
+git clone https://github.com/jasonmgl/InceptionOfThings
+cd InceptionOfThings/p1
 ```
 
 Make sure the following tools are installed on your system:
