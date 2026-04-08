@@ -15,9 +15,9 @@ The goal of this project was to become familiar with Kubernetes using K3s and K3
 
 The project is divided into 3 parts:
 
-* [p1 (K3s, Server, Worker, Vagrant)](https://github.com/jasonmgl/IoT/blob/main/p1/README.md)
-* [p2 (K3s, Manifests)](https://github.com/jasonmgl/IoT/blob/main/p2/README.md)
-* [p3 (K3d, ArgoCD)](https://github.com/jasonmgl/IoT/blob/main/p3/README.md)
+* [P1: build a 2-node K3s cluster with Vagrant](https://github.com/jasonmgl/IoT/blob/main/p1/README.md)
+* [P2: deploy apps with Kubernetes manifests](https://github.com/jasonmgl/IoT/blob/main/p2/README.md)
+* [P3: use K3d and Argo CD for continuous deployment](https://github.com/jasonmgl/IoT/blob/main/p3/README.md)
 
 Each part introduces new concepts and tools.
 
