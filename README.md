@@ -1,25 +1,25 @@
-# Inception of Things
+# Inception Of Things
 
-*This project has been created as part of the 42 curriculum by jmougel, klombard, mmorot*
+*This project was created as part of the 42 curriculum by jmougel, klombard, and mmorot.*
 
 ## Description
 
-Le but de ce projet etait de se familiariser avec Kubernetes, grace aux outils: K3s et K3d pour creer un cluster sans ou avec Docker, d'apprendre a utiliser Vagrant pour la creation de cluster de Machine Virtuelle simplement et d'apprendre la CI avec ArgoCD
+The goal of this project was to become familiar with Kubernetes using K3s and K3d in order to create a cluster with or without Docker, learn how to use Vagrant to easily create a virtual machine cluster, and discover CI/CD concepts with Argo CD.
 
 ## Tech Stack
 
-* **Languages:** Bash, Yaml
-* **Tools:** K3s, K3d, Vagrant, ArgoCD
+* **Languages:** Bash, YAML
+* **Tools:** K3s, K3d, Vagrant, Argo CD
 
 ## Instructions
 
-Le projet ce divise en 3 parties :
+The project is divided into 3 parts:
 
 * [p1 (K3s, Server, Worker, Vagrant)](https://github.com/jasonmgl/IoT/blob/main/p1/README.md)
-* [p2 (K3s, Manifest)](https://github.com/jasonmgl/IoT/blob/main/p2/README.md)
+* [p2 (K3s, Manifests)](https://github.com/jasonmgl/IoT/blob/main/p2/README.md)
 * [p3 (K3d, ArgoCD)](https://github.com/jasonmgl/IoT/blob/main/p3/README.md)
 
-Chaque partie permet d'apprendre de nouvelles notions
+Each part introduces new concepts and tools.
 
 ### Installation
 
@@ -28,12 +28,15 @@ git clone https://github.com/jasonmgl/IoT
 cd IoT
 ```
 
-Avoir d'installer sur son systeme: vagrant, virtualbox
+Make sure the following tools are installed on your system:
+
+* Vagrant
+* VirtualBox
 
 ## Project Structure
 
 ```text
-IoT
+InceptionOfThings
 ├── p1/
 ├── p2/
 ├── p3/
