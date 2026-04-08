@@ -4,12 +4,12 @@
 
 ## Description
 
-Le but de ce projet etait de se familiariser avec Kubernetes, grace aux outils: K3s et K3d pour creer un cluster sans ou avec Docker, d'apprendre a utiliser Vagrant pour la creation de cluster de Machine Virtuelle simplement et d'apprendre la CI avec ArgoCD.
+Le but de ce projet etait de se familiariser avec Kubernetes, grace aux outils: K3s et K3d pour creer un cluster sans ou avec Docker, d'apprendre a utiliser Vagrant pour la creation de cluster de Machine Virtuelle simplement et d'apprendre la CI avec ArgoCD
 
 ## Tech Stack
 
-- Language: Bash, Yaml
-- Tools: K3s, K3d, Vagrant, ArgoCD
+* **Languages:** Bash, Yaml
+* **Tools:** K3s, K3d, Vagrant, ArgoCD
 
 ## Instructions
 
@@ -19,7 +19,7 @@ Le projet ce divise en 3 parties :
 * [p2 (K3s, Manifest)](https://github.com/jasonmgl/IoT/blob/main/p2/README.md)
 * [p3 (K3d, ArgoCD)](https://github.com/jasonmgl/IoT/blob/main/p3/README.md)
 
-Chaque partie permet d'apprendre de nouvelles notions.
+Chaque partie permet d'apprendre de nouvelles notions
 
 ### Installation
 
@@ -43,5 +43,5 @@ IoT
 
 ## Author
 
-- Login: jmougel
-- GitHub: [jasonmgl](https://github.com/jasonmgl)
+* **Login:** jmougel
+* **GitHub:** [jasonmgl](https://github.com/jasonmgl)
