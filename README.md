@@ -1,4 +1,4 @@
-# Project Name
+# Inception of Things
 
 *This project has been created as part of the 42 curriculum by jmougel, klombard, mmorot*
 
@@ -15,9 +15,9 @@ Le but de ce projet etait de se familiariser avec Kubernetes, grace aux outils: 
 
 Le projet ce divise en 3 parties :
 
-* p1 (K3s, Server, Worker, Vagrant)
-* p2 (K3s, Manifest)
-* p3 (K3d, ArgoCD)
+* [p1 (K3s, Server, Worker, Vagrant)](https://github.com/jasonmgl/IoT/blob/main/p1/README.md)
+* [p2 (K3s, Manifest)](https://github.com/jasonmgl/IoT/blob/main/p2/README.md)
+* [p3 (K3d, ArgoCD)](https://github.com/jasonmgl/IoT/blob/main/p3/README.md)
 
 Chaque partie permet d'apprendre de nouvelles notions.
 
@@ -37,7 +37,6 @@ IoT
 ├── p1/
 ├── p2/
 ├── p3/
-├── Bonus
 ├── .gitignore
 └── README.md
 ```
