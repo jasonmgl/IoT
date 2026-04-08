@@ -3,7 +3,6 @@ re: clean up
 up:
 	@sudo bash scripts/init.sh
 	@sudo k3d cluster start p3
-# 	@sudo kubectl port-forward svc/argocd-server -n argocd 8081:443
 
 clean:
 	@sudo rm -f /usr/local/bin/kubectl
