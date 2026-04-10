@@ -4,8 +4,6 @@
 
 ## Description
 
-## Description
-
 Part 1 of this project consists of creating and provisioning a 2-node K3s cluster using Vagrant.
 
 Two virtual machines are deployed automatically:
