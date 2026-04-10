@@ -1,10 +1,18 @@
-# Part 1 - K3s Cluster with Vagrant
+# Part 1 - Build a 2-node K3s cluster with Vagrant
 
 *This project was created as part of the 42 curriculum by jmougel, klombard, and mmorot.*
 
 ## Description
 
-Part 1 of the project consists of creating and provisioning a cluster of two virtual machines using Vagrant.
+## Description
+
+Part 1 of this project consists of creating and provisioning a 2-node K3s cluster using Vagrant.
+
+Two virtual machines are deployed automatically:
+* the first one runs **K3s** in **server mode**
+* the second one joins the cluster in **agent mode**
+
+The goal is to build a minimal Kubernetes environment with automated provisioning and passwordless SSH access between the machines.
 
 ### Constraints
 
@@ -16,7 +24,7 @@ Part 1 of the project consists of creating and provisioning a cluster of two vir
 * The IP address of the first machine (**Server**) must be **192.168.56.110**.
 * The IP address of the second machine (**ServerWorker**) must be **192.168.56.111**.
 * You must be able to connect to both machines through SSH without a password.
-* **K3s** must be installed on the first machine (**Server**) in controller mode.
+* **K3s** must be installed on the first machine (**Server**) in server mode.
 * **K3s** must be installed on the second machine (**ServerWorker**) in agent mode.
 
 ## Tech Stack
@@ -64,19 +72,27 @@ Reprovisions the Vagrant cluster if the scripts have been updated.
 make clean
 ```
 
-Removes the file containing the token.
+Removes the file containing the K3s node token.
 
 ```bash
 make fclean
 ```
 
-Runs the `clean` command, then removes the Vagrant cluster and its cached files.
+Runs `clean`, then removes the Vagrant virtual machines and cached files.
 
 ```bash
 make help
 ```
 
 Displays the list of available commands.
+
+### Validation
+
+```bash
+vagrant status
+vagrant ssh jmougelS
+sudo kubectl get nodes -o wide
+```
 
 ## Project Structure
 
