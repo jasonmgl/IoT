@@ -4,34 +4,35 @@
 
 ## Description
 
-The goal of this project was to become familiar with Kubernetes using K3s and K3d in order to create a cluster with or without Docker, learn how to use Vagrant to easily create a virtual machine cluster, and discover CI/CD concepts with Argo CD.
+The goal of this project is to discover Kubernetes through a progressive approach using **K3s**, **K3d**, **Vagrant**, and **Argo CD**.
+
+It is divided into three parts:
+
+* **P1** – Build and provision a 2-node K3s cluster with Vagrant.
+* **P2** – Deploy multiple applications using Kubernetes manifests.
+* **P3** – Use K3d and Argo CD to explore continuous deployment.
 
 ## Tech Stack
 
 * **Languages:** Bash, YAML
 * **Tools:** K3s, K3d, Vagrant, Argo CD
 
-## Instructions
+## Project Parts
 
-The project is divided into 3 parts:
+* [P1: Build a 2-node K3s cluster with Vagrant](./p1/README.md)
+* [P2: Deploy apps with Kubernetes manifests](./p2/README.md)
+* [P3: Use K3d and Argo CD for continuous deployment](./p3/README.md)
 
-* [P1: build a 2-node K3s cluster with Vagrant](https://github.com/jasonmgl/IoT/blob/main/p1/README.md)
-* [P2: deploy apps with Kubernetes manifests](https://github.com/jasonmgl/IoT/blob/main/p2/README.md)
-* [P3: use K3d and Argo CD for continuous deployment](https://github.com/jasonmgl/IoT/blob/main/p3/README.md)
+Each part introduces new concepts and tools related to container orchestration and deployment automation.
 
-Each part introduces new concepts and tools.
-
-### Installation
+## Installation
 
 ```bash
 git clone https://github.com/jasonmgl/InceptionOfThings
 cd InceptionOfThings
 ```
 
-Make sure the following tools are installed on your system:
-
-* Vagrant
-* VirtualBox
+Refer to each part's README for its specific setup and requirements.
 
 ## Project Structure
 
