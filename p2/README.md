@@ -42,12 +42,19 @@ The Docker image used for this exercise is:
 ```bash
 git clone https://github.com/jasonmgl/InceptionOfThings
 cd InceptionOfThings/p2
+make up
 ```
 
 Make sure the following tools are installed on your system:
 
 * Vagrant
 * VirtualBox
+
+Make sure the following hosts are in your /etc/hosts file:
+
+* 192.168.56.110 app1.local
+* 192.168.56.110 app2.local
+* 192.168.56.110 app3.local
 
 ### Usage
 
@@ -119,6 +126,16 @@ p2
     │   └── service.yaml
     └── ingress
         └── ingress.yaml
+```
+
+```
+Cluster IP -- > 192.168.56.110
+
+app1 --> Host: http://app1.local/
+
+app2 --> Host: http://app2.local/
+
+app3 --> Host: http://app3.local/
 ```
 
 ## Resources

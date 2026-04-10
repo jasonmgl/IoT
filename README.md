@@ -10,12 +10,12 @@ It is divided into three parts:
 
 * **P1** – Build and provision a 2-node K3s cluster with Vagrant.
 * **P2** – Deploy multiple applications using Kubernetes manifests.
-* **P3** – Use K3d and Argo CD to explore continuous deployment.
+* **P3** – Use K3d and Argo CD to explore continuous integration.
 
 ## Tech Stack
 
 * **Languages:** Bash, YAML
-* **Tools:** K3s, K3d, Vagrant, Argo CD
+* **Tools:** K3s, K3d, Docker, Vagrant, Argo CD
 
 ## Project Parts
 

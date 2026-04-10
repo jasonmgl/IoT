@@ -1,54 +1,120 @@
-# Project Name
+# Part 2 - Use K3d and Argo CD for continuous deployment
 
-*This project has been created as part of the 42 curriculum by user, user, user*
+*This project was created as part of the 42 curriculum by jmougel, klombard, and mmorot.*
 
 ## Description
 
-Section that clearly presents the project, including its goal and a
-brief overview.
+La partie 3 de ce projet conciste a faire notre premier CD (Continuous Deployment) a l'aide de Argo CD.
+Dans un premier temps on doit creer un cluster K3d (La version dockeriser de K3s qui nous evite de passer par une machine virtuel), ensuite on doit creer 2 Namespace: dev (Qui sera le namespace qui contiendra l'application surveiller par Argo CD sur un repository Github) et argocd (qui contiendra Argo CD).
+Ensuite on doit verifier qu'Argo CD redeploie bien la bonne image Docker quand on met a jour le fichier Deployment dans le repo Github surveille par Argo CD.
+
+### Manifest Types Used
+
+* **Deployment**: used to deploy and manage an application by creating and maintaining ReplicaSets and Pods.
+* **Service**: used to provide a stable network endpoint for a set of Pods and make the application reachable from within the cluster.
+* **Ingress**: used to route external HTTP requests to the appropriate Service based on the requested host.
+* **Namespace**: Utiliser pour compartimenter un cluster Kubernetes (Pour l'organisation principalement, le reseau n'est pas compartimenter et toute les applications presentent dans le cluster peuvent communiquer entre elle qu'elles soit dans le meme namespace ou pas).
+
+The Docker image used for this exercise is:
+
+* `wil42/playground:v1`
+* `wil42/playground:v2`
+
+## Constraints
+
+* Create two namespaces:
+    - The first one will be dedicated to Argo CD
+    - The second one will be named dev and will contain an application. This application will be automatically deployed by Argo CD using your online GitHub repository.
+* You can use the pre-made application created by Wil, which is available on Docker Hub.
+* Be able to change the version from your public GitHub repository, then check that the application has been correctly updated.
 
 ## Tech Stack
 
-- Language: 
-- Tools: 
-- Frameworks: 
-- Environment: 
+* **Languages:** Bash, YAML
+* **Tools:** K3d, Docker, Argo CD
 
 ## Instructions
-
-Section containing any relevant information about compilation,
-installation, and/or execution.
 
 ### Installation
 
 ```bash
-git clone <repository_url>
-cd <project_directory>
+git clone https://github.com/jasonmgl/InceptionOfThings
+cd InceptionOfThings/p3
+make up
 ```
 
 ### Usage
 
+A **Makefile** is provided to make the project easier to run. The following commands are available:
+
 ```bash
-<command_to_build_or_run>
+make up
+```
+
+Execute le script qui install l'environnement pour lancer le projet et demarre le cluster K3d.
+
+```bash
+make clean
+```
+
+Supprime les executable installer dans /usr/local/bin/ par le script d'installation de l'environnement et desinstalle docker egalement a l'aide d'un script.
+
+```bash
+make help
+```
+
+Displays the list of available commands.
+
+### Validation
+
+```bash
+
 ```
 
 ## Project Structure
 
 ```text
-.
-├── src/
-├── include/
-├── assets/
+p3
 ├── Makefile
-└── README.md
+├── README.md
+├── scripts
+│   ├── get-docker.sh
+│   ├── init.sh
+│   └── remove-docker.sh
+└── confs
+    ├── argocd
+    │   ├── argocd-app.yaml.yaml
+    │   ├── ingress.yaml
+    │   └── namespace.yaml
+    └── k3d-config.yaml
 ```
 
 ## Resources
 
-Section listing classic references related to the topic (documentation, articles, tutorials, etc.), as well as a description of how AI was used —
-specifying for which tasks and which parts of the project.
+### Image
+
+![K3s Service/Ingress](https://lh5.googleusercontent.com/ZKJZ5_b2BuaU9KnDYkeCOc0ePvpHQdhfMwvZPjU3pTK5aHL1022YNwY0G9qr4udwae7yI9hgGmhK3g0fuC66HK8ol3BtdVQ_z27nJFfHAfW38oMmhL9Ot8nc3r2Jxel5yTM9h5az33ws0DLwoCKmIZs)
+
+### Articles
+
+* [Kubernetes Pods: create, observe, and understand their lifecycle](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/pods/)
+* [Kubernetes Deployments: deploy and update your applications](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/deployments/)
+* [Kubernetes Services: expose and connect your applications](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/services/)
+* [Kubernetes Manifests: write, validate, and fix them quickly](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/ecrire-manifests/)
+* [How to connect to Kubernetes Pods](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/outils/kubectl-exec-debug/)
+* [Kubernetes Ingress: expose your HTTP/HTTPS applications](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/ingress/)
+
+### Videos
+
+* [Kubernetes 005 - What is a Pod?](https://www.youtube.com/watch?v=maD16sgsFTY&list=PLn6POgpklwWo6wiy2G3SjBubF6zXjksap&index=7)
+* [Kubernetes 016 - What is a Deployment?](https://www.youtube.com/watch?v=AFEU_mBbzr0&list=PLn6POgpklwWo6wiy2G3SjBubF6zXjksap&index=18)
+* [Kubernetes 018 - What is a Service? (objectives, ClusterIP, expose...)](https://www.youtube.com/watch?v=Z62WCbIIWyg&list=PLn6POgpklwWo6wiy2G3SjBubF6zXjksap&index=20)
+
+## AI Usage
+
+I mainly used AI to help me understand concepts, generate diagrams, and create quizzes.
 
 ## Author
 
-- Login: jmougel
-- GitHub: [jasonmgl](https://github.com/jasonmgl)
+* **Login:** jmougel
+* **GitHub:** [jasonmgl](https://github.com/jasonmgl)

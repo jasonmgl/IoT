@@ -39,6 +39,7 @@ The goal is to build a minimal Kubernetes environment with automated provisionin
 ```bash
 git clone https://github.com/jasonmgl/InceptionOfThings
 cd InceptionOfThings/p1
+make up
 ```
 
 Make sure the following tools are installed on your system:
