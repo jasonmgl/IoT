@@ -65,11 +65,12 @@ make help
 
 Displays the list of available commands.
 
-### Validation
+### Dashboard
 
-```bash
+Se rendre a cette adresse pour avoir accee au dashboard Argo CD: http://argocd.local/
 
-```
+Login : admin
+Mot de passe adminadmin
 
 ## Project Structure
 
@@ -98,18 +99,17 @@ p3
 
 ### Articles
 
-* [Kubernetes Pods: create, observe, and understand their lifecycle](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/pods/)
-* [Kubernetes Deployments: deploy and update your applications](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/deployments/)
-* [Kubernetes Services: expose and connect your applications](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/services/)
-* [Kubernetes Manifests: write, validate, and fix them quickly](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/ecrire-manifests/)
-* [How to connect to Kubernetes Pods](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/outils/kubectl-exec-debug/)
-* [Kubernetes Ingress: expose your HTTP/HTTPS applications](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/ingress/)
+* [Créer des clusters Kubernetes locaux avec k3d](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/k3d/)
+* [Namespaces Kubernetes : organiser et isoler logiquement vos ressources](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/namespaces/)
+* [Argo CD](https://argo-cd.readthedocs.io/en/stable//)
+* [ArgoCD — Sécuriser votre déploiement GitOps](https://blog.stephane-robert.info/docs/pipeline-cicd/argocd/securiser/)
+* [Installer ArgoCD sur Kubernetes](https://blog.stephane-robert.info/docs/pipeline-cicd/argocd/installation/)
+* [ArgoCD — Déployer votre première application](https://blog.stephane-robert.info/docs/pipeline-cicd/argocd/premiere-application/)
 
 ### Videos
 
-* [Kubernetes 005 - What is a Pod?](https://www.youtube.com/watch?v=maD16sgsFTY&list=PLn6POgpklwWo6wiy2G3SjBubF6zXjksap&index=7)
-* [Kubernetes 016 - What is a Deployment?](https://www.youtube.com/watch?v=AFEU_mBbzr0&list=PLn6POgpklwWo6wiy2G3SjBubF6zXjksap&index=18)
-* [Kubernetes 018 - What is a Service? (objectives, ClusterIP, expose...)](https://www.youtube.com/watch?v=Z62WCbIIWyg&list=PLn6POgpklwWo6wiy2G3SjBubF6zXjksap&index=20)
+* [Namespaces and Contexts - #Kubernetes 13](https://www.youtube.com/watch?v=KthldM3Y4lg)
+* [ARGO-EVENTS - 01. INTRODUCTION](https://www.youtube.com/watch?v=xZr7rF8I3Wc)
 
 ## AI Usage
 
