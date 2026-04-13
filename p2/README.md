@@ -1,7 +1,8 @@
 # Part 2 - Deploy apps with Kubernetes manifests
 
 *This project was created as part of the 42 curriculum by jmougel, klombard, and mmorot.*
-<br/>
+
+
 [Back](../README.md)
 
 ## Description

@@ -1,7 +1,8 @@
 # Part 3 - Use K3d and Argo CD for Continuous Deployment
 
 *This project was created as part of the 42 curriculum by jmougel, klombard, and mmorot.*
-<br/>
+
+
 [Back](../README.md)
 
 ## Description

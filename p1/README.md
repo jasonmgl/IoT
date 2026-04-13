@@ -1,7 +1,8 @@
 # Part 1 - Build a 2-node K3s cluster with Vagrant
 
 *This project was created as part of the 42 curriculum by jmougel, klombard, and mmorot.*
-<br/>
+
+
 [Back](../README.md)
 
 ## Description
