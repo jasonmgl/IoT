@@ -4,7 +4,7 @@ up:
 	@sudo bash scripts/init.sh
 	@sudo k3d cluster start p3
 
-clean:
+purge:
 	@sudo rm -f /usr/local/bin/kubectl
 	@sudo rm -f /usr/local/bin/k3d
 	@sudo rm -f /usr/local/bin/argocd
@@ -13,4 +13,4 @@ clean:
 help:
 	@tail -n 1 ./Makefile |  sed -e 's/.PHONY:/Commands:/g'
 
-.PHONY: up clean re help
+.PHONY: up purge re help

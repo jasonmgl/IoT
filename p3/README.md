@@ -1,21 +1,28 @@
-# Part 2 - Use K3d and Argo CD for continuous deployment
+# Part 3 - Use K3d and Argo CD for Continuous Deployment
 
+[Back](../README.md)
 *This project was created as part of the 42 curriculum by jmougel, klombard, and mmorot.*
 
 ## Description
 
-La partie 3 de ce projet conciste a faire notre premier CD (Continuous Deployment) a l'aide de Argo CD.
-Dans un premier temps on doit creer un cluster K3d (La version dockeriser de K3s qui nous evite de passer par une machine virtuel), ensuite on doit creer 2 Namespace: dev (Qui sera le namespace qui contiendra l'application surveiller par Argo CD sur un repository Github) et argocd (qui contiendra Argo CD).
-Ensuite on doit verifier qu'Argo CD redeploie bien la bonne image Docker quand on met a jour le fichier Deployment dans le repo Github surveille par Argo CD.
+Part 3 of this project consists of setting up a first **Continuous Deployment** workflow using **Argo CD**.
+
+The first step is to create a **K3d** cluster, which runs **K3s** clusters inside Docker containers and avoids the need for a virtual machine. Then, two namespaces must be created:
+
+* **argocd**, which contains Argo CD
+* **dev**, which contains the application monitored and deployed by Argo CD from a GitHub repository
+
+The goal is to verify that Argo CD automatically synchronizes the cluster state with the Kubernetes manifests stored in the GitHub repository.
+When the Deployment definition is updated in the repository, the application is automatically updated in the cluster.
 
 ### Manifest Types Used
 
 * **Deployment**: used to deploy and manage an application by creating and maintaining ReplicaSets and Pods.
 * **Service**: used to provide a stable network endpoint for a set of Pods and make the application reachable from within the cluster.
 * **Ingress**: used to route external HTTP requests to the appropriate Service based on the requested host.
-* **Namespace**: Utiliser pour compartimenter un cluster Kubernetes (Pour l'organisation principalement, le reseau n'est pas compartimenter et toute les applications presentent dans le cluster peuvent communiquer entre elle qu'elles soit dans le meme namespace ou pas).
+* **Namespace**: used to logically organize and separate resources inside a Kubernetes cluster. It is mainly intended for organization, not for full network isolation, since applications from different namespaces can still communicate with each other by default.
 
-The Docker image used for this exercise is:
+The Docker images used for this exercise are:
 
 * `wil42/playground:v1`
 * `wil42/playground:v2`
@@ -23,10 +30,10 @@ The Docker image used for this exercise is:
 ## Constraints
 
 * Create two namespaces:
-    - The first one will be dedicated to Argo CD
-    - The second one will be named dev and will contain an application. This application will be automatically deployed by Argo CD using your online GitHub repository.
-* You can use the pre-made application created by Wil, which is available on Docker Hub.
-* Be able to change the version from your public GitHub repository, then check that the application has been correctly updated.
+  * The first one must be dedicated to Argo CD.
+  * The second one must be named **dev** and contain an application automatically deployed by Argo CD from your public GitHub repository.
+* You may use the prebuilt application provided by Wil, available on Docker Hub.
+* You must be able to change the version from your public GitHub repository and verify that the application is updated correctly.
 
 ## Tech Stack
 
@@ -51,13 +58,13 @@ A **Makefile** is provided to make the project easier to run. The following comm
 make up
 ```
 
-Execute le script qui install l'environnement pour lancer le projet et demarre le cluster K3d.
+Runs the script that installs the required environment for the project and starts the K3d cluster.
 
 ```bash
-make clean
+make purge
 ```
 
-Supprime les executable installer dans /usr/local/bin/ par le script d'installation de l'environnement et desinstalle docker egalement a l'aide d'un script.
+Removes the executables installed in `/usr/local/bin` by the environment setup script and also uninstalls Docker using a dedicated removal script.
 
 ```bash
 make help
@@ -67,10 +74,14 @@ Displays the list of available commands.
 
 ### Dashboard
 
-Se rendre a cette adresse pour avoir accee au dashboard Argo CD: http://argocd.local/
+Go to the following address to access the Argo CD dashboard:
 
-Login : admin
-Mot de passe adminadmin
+```text
+http://argocd.local/
+```
+
+**Login:** `admin`  
+**Password:** `adminadmin`
 
 ## Project Structure
 
@@ -84,7 +95,7 @@ p3
 │   └── remove-docker.sh
 └── confs
     ├── argocd
-    │   ├── argocd-app.yaml.yaml
+    │   ├── argocd-app.yaml
     │   ├── ingress.yaml
     │   └── namespace.yaml
     └── k3d-config.yaml
@@ -92,19 +103,19 @@ p3
 
 ## Resources
 
-### Image
+### Images
 
 ![K3d project structure](https://i.postimg.cc/7PVdqGrF/Screenshot-from-2026-04-10-17-26-47.png)
 ![K3d structure](https://tse3.mm.bing.net/th/id/OIP.7MD59m547aIA46rnCg4w5gHaDf?pid=Api)
 
 ### Articles
 
-* [Créer des clusters Kubernetes locaux avec k3d](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/k3d/)
-* [Namespaces Kubernetes : organiser et isoler logiquement vos ressources](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/namespaces/)
-* [Argo CD](https://argo-cd.readthedocs.io/en/stable//)
-* [ArgoCD — Sécuriser votre déploiement GitOps](https://blog.stephane-robert.info/docs/pipeline-cicd/argocd/securiser/)
-* [Installer ArgoCD sur Kubernetes](https://blog.stephane-robert.info/docs/pipeline-cicd/argocd/installation/)
-* [ArgoCD — Déployer votre première application](https://blog.stephane-robert.info/docs/pipeline-cicd/argocd/premiere-application/)
+* [Create local Kubernetes clusters with K3d](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/k3d/)
+* [Kubernetes Namespaces: organize and logically isolate your resources](https://blog.stephane-robert.info/docs/conteneurs/orchestrateurs/kubernetes/namespaces/)
+* [Argo CD Documentation](https://argo-cd.readthedocs.io/en/stable/)
+* [Argo CD — Secure your GitOps deployment](https://blog.stephane-robert.info/docs/pipeline-cicd/argocd/securiser/)
+* [Install Argo CD on Kubernetes](https://blog.stephane-robert.info/docs/pipeline-cicd/argocd/installation/)
+* [Argo CD — Deploy your first application](https://blog.stephane-robert.info/docs/pipeline-cicd/argocd/premiere-application/)
 
 ### Videos
 
