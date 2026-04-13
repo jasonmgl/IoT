@@ -2,19 +2,18 @@
 
 *This project was created as part of the 42 curriculum by jmougel, klombard, and mmorot.*
 
-
 [Back](../README.md)
 
 ## Description
 
 Part 3 of this project consists of setting up a first **Continuous Deployment** workflow using **Argo CD**.
 
-The first step is to create a **K3d** cluster, which runs **K3s** clusters inside Docker containers and avoids the need for a virtual machine. Then, two namespaces must be created:
+The first step is to create a **K3d** cluster, which runs a **K3s** cluster inside Docker containers and avoids the need for a virtual machine. Then, two namespaces must be created:
 
 * **argocd**, which contains Argo CD
 * **dev**, which contains the application monitored and deployed by Argo CD from a GitHub repository
 
-The goal is to verify that Argo CD automatically synchronizes the cluster state with the Kubernetes manifests stored in the GitHub repository.
+The goal is to verify that Argo CD automatically synchronizes the cluster state with the Kubernetes manifests stored in the GitHub repository.  
 When the Deployment definition is updated in the repository, the application is automatically updated in the cluster.
 
 ### Manifest Types Used
@@ -60,13 +59,13 @@ A **Makefile** is provided to make the project easier to run. The following comm
 make up
 ```
 
-Runs the script that installs the required environment for the project and starts the K3d cluster.
+Installs the required environment for the project and starts the K3d cluster.
 
 ```bash
 make purge
 ```
 
-Removes the executables installed in `/usr/local/bin` by the environment setup script and also uninstalls Docker using a dedicated removal script.
+Removes the executables installed in `/usr/local/bin` by the environment setup script and also uninstalls Docker using a dedicated removal script. Use this command with caution.
 
 ```bash
 make help
@@ -82,8 +81,27 @@ Go to the following address to access the Argo CD dashboard:
 http://argocd.local/
 ```
 
-**Login:** `admin`  
-**Password:** `adminadmin`
+### Credentials
+
+* **Login:** `admin`
+* **Password:** `adminadmin`
+
+Before accessing the dashboard, make sure you have added the following host entry to your `/etc/hosts` file:
+
+```text
+127.0.0.1 argocd.local
+```
+
+## Validation
+
+You can verify that the environment is running correctly with:
+
+```bash
+kubectl get namespaces
+kubectl get pods -n argocd
+kubectl get pods -n dev
+kubectl get ingress -A
+```
 
 ## Project Structure
 
@@ -122,7 +140,6 @@ p3
 ### Videos
 
 * [Namespaces and Contexts - #Kubernetes 13](https://www.youtube.com/watch?v=KthldM3Y4lg)
-* [ARGO-EVENTS - 01. INTRODUCTION](https://www.youtube.com/watch?v=xZr7rF8I3Wc)
 
 ## AI Usage
 
