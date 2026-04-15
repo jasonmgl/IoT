@@ -1,0 +1,51 @@
+global:
+  hosts:
+    domain: local
+    https: false
+
+  ingress:
+    enabled: true
+    class: traefik
+    configureCertmanager: false
+    tls:
+      enabled: false
+
+  gatewayApi:
+    enabled: false
+
+  kas:
+    enabled: false
+
+  pages:
+    enabled: false
+
+  registry:
+    enabled: false
+
+installCertmanager: false
+
+nginx-ingress:
+  enabled: false
+
+gitlab-runner:
+  install: false
+
+prometheus:
+  install: false
+
+registry:
+  enabled: false
+
+gitlab:
+  migrations:
+    initialRootPassword:
+      secret: gitlab-gitlab-initial-root-password
+      key: password
+
+  gitaly:
+    persistence:
+      size: 10Gi
+
+minio:
+  persistence:
+    size: 5Gi

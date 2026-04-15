@@ -67,6 +67,9 @@ printf '%s\n' "${GREEN}$(argocd version --client)${ENDCOLOR}"
 
 if ! command -v helm >/dev/null 2>&1; then
     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-
+    sudo helm repo add gitlab http://charts.gitlab.io/
+    sudo helm repo update
+    # sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password='rootroot'
+    sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --create-namespace --wait -f confs/gitlab/values-gitlab.yaml --timeout 10m
 fi
 printf '%s\n' "${GREEN}Helm: $(helm version --short)${ENDCOLOR}"

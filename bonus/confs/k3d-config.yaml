@@ -1,7 +1,7 @@
 apiVersion: k3d.io/v1alpha5
 kind: Simple
 metadata:
-  name: p3
+  name: bonus
 kubeAPI:
   host: "localhost"
   hostIP: "127.0.0.1"

@@ -1,4 +1,4 @@
-re: clean up
+re: purge up
 
 up:
 	@sudo bash scripts/init.sh
