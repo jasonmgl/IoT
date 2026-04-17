@@ -31,22 +31,23 @@ if ! command -v k3d >/dev/null 2>&1; then
     sudo curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
     sleep 1
     sudo k3d cluster create --config confs/k3d-config.yaml
-    sleep 1
-    sudo kubectl apply -f confs/argocd/namespace.yaml
-    sudo kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-    sudo kubectl wait --for=condition=available deployment \
-        -l app.kubernetes.io/name=argocd-server \
-        -n argocd \
-        --timeout=300s
-    sudo kubectl patch configmap argocd-cmd-params-cm -n argocd \
-        --type merge \
-        -p '{"data":{"server.insecure":"true"}}'
-    sudo kubectl rollout restart deployment argocd-server -n argocd
-    sudo kubectl rollout status deployment argocd-server -n argocd --timeout=300s
-    sudo kubectl apply -f confs/argocd/ingress.yaml
-    sudo kubectl apply -f confs/argocd/argocd-app.yaml
 fi
 printf '%s\n' "${GREEN}$(k3d version)${ENDCOLOR}"
+
+if ! command -v helm >/dev/null 2>&1; then
+    curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    sudo helm repo add gitlab http://charts.gitlab.io/
+    sudo helm repo add argo https://argoproj.github.io/argo-helm
+    sudo helm repo update
+    sudo helm upgrade --install argo-cd argo/argo-cd --version 9.5.2 --namespace argocd --create-namespace --wait -f confs/argocd/values.yaml --timeout 10m
+    sudo kubectl apply -f confs/argocd/argocd-app.yaml
+    sudo kubectl create namespace gitlab || true
+    sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password='RootRootRoot'
+    sudo kubectl -n gitlab create secret generic gitlab-minio-secret --from-literal=accesskey='admin' --from-literal=secretkey='adminadmin'
+    sleep 1
+    sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 10m
+fi
+printf '%s\n' "${GREEN}Helm: $(helm version --short)${ENDCOLOR}"
 
 if ! command -v argocd >/dev/null 2>&1; then
     ARGOCD_SECRET=$(kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 -d)
@@ -64,12 +65,3 @@ if ! command -v argocd >/dev/null 2>&1; then
     sudo kubectl delete secret argocd-initial-admin-secret -n argocd
 fi
 printf '%s\n' "${GREEN}$(argocd version --client)${ENDCOLOR}"
-
-if ! command -v helm >/dev/null 2>&1; then
-    curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-    sudo helm repo add gitlab http://charts.gitlab.io/
-    sudo helm repo update
-    # sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password='rootroot'
-    sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --create-namespace --wait -f confs/gitlab/values-gitlab.yaml --timeout 10m
-fi
-printf '%s\n' "${GREEN}Helm: $(helm version --short)${ENDCOLOR}"

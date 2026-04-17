@@ -51,6 +51,14 @@ cd InceptionOfThings/p3
 make up
 ```
 
+Make sure the following tools are installed on your system:
+
+* Make
+
+Make sure the following hosts are in your /etc/hosts file:
+
+* 127.0.0.1 argocd.local gitlab.local minio.local
+
 ### Usage
 
 A **Makefile** is provided to make the project easier to run. The following commands are available:

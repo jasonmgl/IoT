@@ -1,0 +1,21 @@
+global:
+  domain: argocd.local
+
+configs:
+  cm:
+    "timeout.reconciliation": 30s
+    "timeout.reconciliation.jitter": 0s
+
+  params:
+    "server.insecure": true
+
+server:
+  ingress:
+    enabled: true
+    controller: generic
+    ingressClassName: traefik
+    hostname: argocd.local
+    path: /
+    pathType: Prefix
+    tls: false
+    annotations: {}

@@ -47,5 +47,7 @@ gitlab:
       size: 10Gi
 
 minio:
+  credentials:
+    secret: gitlab-minio-secret
   persistence:
     size: 5Gi

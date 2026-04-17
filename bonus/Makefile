@@ -7,6 +7,8 @@ up:
 purge:
 	@sudo helm uninstall gitlab -n gitlab || true
 	@sudo kubectl delete namespace gitlab || true
+	@sudo helm uninstall argocd -n argocd || true
+	@sudo kubectl delete namespace argocd || true
 	@sudo rm -f /usr/local/bin/kubectl
 	@sudo rm -f /usr/local/bin/k3d
 	@sudo rm -f /usr/local/bin/argocd

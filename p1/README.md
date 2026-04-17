@@ -45,6 +45,7 @@ make up
 
 Make sure the following tools are installed on your system:
 
+* Make
 * Vagrant
 * VirtualBox
 
