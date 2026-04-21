@@ -12,6 +12,13 @@ fi
 
 set -euo pipefail
 
+printf '%s\n' "${GREEN}.__                 __         .__  .__              .__     ${ENDCOLOR}"
+printf '%s\n' "${GREEN}|__| ____   _______/  |______  |  | |  |        _____|  |__  ${ENDCOLOR}"
+printf '%s\n' "${GREEN}|  |/    \ /  ___/\   __\__  \ |  | |  |       /  ___/  |  \ ${ENDCOLOR}"
+printf '%s\n' "${GREEN}|  |   |  \___  \  |  |  / __ \|  |_|  |__     \___ \|   Y  \ ${ENDCOLOR}"
+printf '%s\n' "${GREEN}|__|___|  /____  > |__| |____  /____/____/ /\ /____  >___|  /${ENDCOLOR}"
+printf '%s\n' "${GREEN}        \/     \/            \/            \/      \/     \/ ${ENDCOLOR}"
+
 sudo apt-get update -qq
 sudo apt-get install -yqq ca-certificates curl >/dev/null
 sudo install -m 0755 -d /etc/apt/keyrings

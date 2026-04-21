@@ -1,13 +1,11 @@
 re: purge up
 
 up:
-	@sudo bash scripts/init.sh
+	@sudo bash scripts/install.sh
 	@sudo k3d cluster start p3
 
 purge:
-	@sudo rm -f /usr/local/bin/kubectl
-	@sudo rm -f /usr/local/bin/k3d
-	@sudo rm -f /usr/local/bin/argocd
+	@sudo bash scripts/uninstall.sh
 	@sudo bash scripts/remove-docker.sh || true
 
 help:

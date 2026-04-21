@@ -36,11 +36,11 @@ prometheus:
 registry:
   enabled: false
 
-gitlab:
-  migrations:
-    initialRootPassword:
-      secret: gitlab-gitlab-initial-root-password
-      key: password
+# gitlab:
+#   migrations:
+#     initialRootPassword:
+#       secret: gitlab-gitlab-initial-root-password
+#       key: password
 
   gitaly:
     persistence:

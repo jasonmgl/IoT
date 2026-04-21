@@ -12,6 +12,13 @@ fi
 
 set -euo pipefail
 
+printf '%s\n' "${GREEN}.__                 __         .__  .__              .__     ${ENDCOLOR}"
+printf '%s\n' "${GREEN}|__| ____   _______/  |______  |  | |  |        _____|  |__  ${ENDCOLOR}"
+printf '%s\n' "${GREEN}|  |/    \ /  ___/\   __\__  \ |  | |  |       /  ___/  |  \ ${ENDCOLOR}"
+printf '%s\n' "${GREEN}|  |   |  \___  \  |  |  / __ \|  |_|  |__     \___ \|   Y  \ ${ENDCOLOR}"
+printf '%s\n' "${GREEN}|__|___|  /____  > |__| |____  /____/____/ /\ /____  >___|  /${ENDCOLOR}"
+printf '%s\n' "${GREEN}        \/     \/            \/            \/      \/     \/ ${ENDCOLOR}"
+
 sudo apt-get update -qq
 sudo apt-get install -yqq ca-certificates curl >/dev/null
 sudo install -m 0755 -d /etc/apt/keyrings
@@ -39,13 +46,29 @@ if ! command -v helm >/dev/null 2>&1; then
     sudo helm repo add gitlab http://charts.gitlab.io/
     sudo helm repo add argo https://argoproj.github.io/argo-helm
     sudo helm repo update
-    sudo helm upgrade --install argo-cd argo/argo-cd --version 9.5.2 --namespace argocd --create-namespace --wait -f confs/argocd/values.yaml --timeout 10m
+    sudo kubectl apply -f confs/argocd/namespace.yaml
+    sudo helm upgrade --install argo-cd argo/argo-cd --version 9.5.2 --namespace argocd --wait -f confs/argocd/values.yaml --timeout 10m
     sudo kubectl apply -f confs/argocd/argocd-app.yaml
-    sudo kubectl create namespace gitlab || true
-    sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password='RootRootRoot'
+    sudo kubectl apply -f confs/gitlab/namespace.yaml
+    # sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password='RootRootRoot'
     sudo kubectl -n gitlab create secret generic gitlab-minio-secret --from-literal=accesskey='admin' --from-literal=secretkey='adminadmin'
     sleep 1
-    sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 10m
+    sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 20m
+    printf '%s\n' "-------------------------------------------------"
+    printf '%s\n' "Gitlab's credential"
+    printf '\n'
+    printf '%s\n' "login: root"
+    printf '%s\n' "password: $(sudo kubectl -n gitlab get secret gitlab-gitlab-initial-root-password -o jsonpath="{.data.password}" | base64 -d)"
+    printf '\n'
+    printf '%s\n' "address: http://gitlab.local:8888/"
+    printf '%s\n' "-------------------------------------------------"
+    printf '%s\n' "Minio's credential"
+    printf '\n'
+    printf '%s\n' "login: admin"
+    printf '%s\n' "password: adminadmin"
+    printf '\n'
+    printf '%s\n' "address: http://minio.local:8888/"
+    printf '%s\n' "-------------------------------------------------"
 fi
 printf '%s\n' "${GREEN}Helm: $(helm version --short)${ENDCOLOR}"
 
