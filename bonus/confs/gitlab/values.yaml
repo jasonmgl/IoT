@@ -42,9 +42,9 @@ registry:
 #       secret: gitlab-gitlab-initial-root-password
 #       key: password
 
-  gitaly:
-    persistence:
-      size: 10Gi
+gitaly:
+  persistence:
+    size: 10Gi
 
 minio:
   credentials:
