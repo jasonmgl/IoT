@@ -104,3 +104,7 @@ case "$answer" in
         printf '%s\n' "${RED}Invalid answer: use y or n${ENDCOLOR}"
         ;;
 esac
+
+if cat /etc/hosts | grep -q "gitlab.local"; then
+    sudo sed -i '/gitlab.local/d' /etc/hosts
+fi
