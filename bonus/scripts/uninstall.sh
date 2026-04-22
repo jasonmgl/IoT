@@ -1,4 +1,7 @@
-#! /usr/bin/env bash
+#!/bin/bash
+set -euo pipefail
+
+DEBIAN_FRONTEND=noninteractive
 
 if [[ -t 1 ]]; then
     RED=$'\e[31m'
@@ -57,7 +60,8 @@ read -rp 'Do you want to uninstall k3d ? [y/n] ' answer
 case "$answer" in
     y|Y)
         if command -v k3d >/dev/null 2>&1; then
-            sudo rm -f /usr/local/bin/k3d
+            sudo k3d cluster delete bonus >/dev/null 2>&1
+		    sudo rm -f /usr/local/bin/k3d
         fi
         printf '%s\n' "${GREEN}K3d uninstalled${ENDCOLOR}"
         ;;
