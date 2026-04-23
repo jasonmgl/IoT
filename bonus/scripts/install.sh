@@ -14,7 +14,12 @@ else
     ENDCOLOR=''
 fi
 
-set -euo pipefail
+if [ ! -f "../.env" ]; then
+    printf '%s\n' "${RED}No .env found for this project${ENDCOLOR}"
+    exit 1
+else
+    source ../.env >/dev/null 2>&1
+fi
 
 printf '%s\n' "${GREEN}.__                 __         .__  .__              .__     ${ENDCOLOR}"
 printf '%s\n' "${GREEN}|__| ____   _______/  |______  |  | |  |        _____|  |__  ${ENDCOLOR}"
@@ -52,32 +57,31 @@ if ! command -v helm >/dev/null 2>&1; then
     sudo helm repo update
     sudo kubectl apply -f confs/argocd/namespace.yaml
     sudo helm upgrade --install argocd argo/argo-cd --version 9.5.2 --namespace argocd --wait -f confs/argocd/values.yaml --timeout 10m
-    
     sudo kubectl apply -f confs/argocd/argocd-app.yaml
     sudo kubectl apply -f confs/gitlab/namespace.yaml
-    # sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password='rootrootroot'
-    sudo kubectl -n gitlab create secret generic gitlab-minio-secret --from-literal=accesskey='admin' --from-literal=secretkey='adminadmin'
+    sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password=$GITLAB_PASSWORD
+    sudo kubectl -n gitlab create secret generic gitlab-minio-secret --from-literal=accesskey=$MINIO_ACCESSKEY --from-literal=secretkey=$MINIO_SECRETKEY
     sleep 1
     sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 20m
-    if ! cat /etc/hosts | grep -q "gitlab.local"; then
-        echo "127.0.0.1 gitlab.local minio.local argocd.local" | sudo tee -a /etc/hosts
+    if ! cat /etc/hosts | grep -q $ARGOCD_HOSTNAME; then
+        echo "127.0.0.1 $ARGOCD_HOSTNAME $GITLAB_HOSTNAME $MINIO_HOSTNAME" | sudo tee -a /etc/hosts
     fi
 fi
 printf '%s\n' "${GREEN}Helm: $(helm version --short)${ENDCOLOR}"
 printf '%s\n' "-------------------------------------------------"
 printf '%s\n' "Gitlab's credential"
 printf '\n'
-printf '%s\n' "login: root"
+printf '%s\n' "login: $GITLAB_LOGIN"
 printf '%s\n' "password: $(sudo kubectl -n gitlab get secret gitlab-gitlab-initial-root-password -o jsonpath="{.data.password}" | base64 -d)"
 printf '\n'
-printf '%s\n' "address: http://gitlab.local:8888/"
+printf '%s\n' "address: http://$GITLAB_HOSTNAME:8888/"
 printf '%s\n' "-------------------------------------------------"
 printf '%s\n' "Minio's credential"
 printf '\n'
-printf '%s\n' "login: admin"
-printf '%s\n' "password: adminadmin"
+printf '%s\n' "login: $MINIO_ACCESSKEY"
+printf '%s\n' "password: $MINIO_SECRETKEY"
 printf '\n'
-printf '%s\n' "address: http://minio.local:8888/"
+printf '%s\n' "address: http://$MINIO_HOSTNAME:8888/"
 printf '%s\n' "-------------------------------------------------"
 
 if ! command -v argocd >/dev/null 2>&1; then
@@ -86,13 +90,13 @@ if ! command -v argocd >/dev/null 2>&1; then
     sudo curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/download/v3.3.6/argocd-linux-amd64
     sudo chmod +x argocd
     sudo mv argocd /usr/local/bin/
-    sudo argocd login argocd.local:8843 \
-        --username "admin" \
-        --password "$ARGOCD_SECRET" \
+    sudo argocd login $ARGOCD_HOSTNAME:8843 \
+        --username $ARGOCD_LOGIN \
+        --password $ARGOCD_SECRET \
         --insecure
     sudo argocd account update-password \
-        --current-password "$ARGOCD_SECRET" \
-        --new-password "adminadmin"
+        --current-password $ARGOCD_SECRET \
+        --new-password $ARGOCD_PASSWORD
     sudo kubectl delete secret argocd-initial-admin-secret -n argocd
 fi
 printf '%s\n' "${GREEN}$(argocd version --client)${ENDCOLOR}"
