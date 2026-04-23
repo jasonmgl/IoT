@@ -106,6 +106,6 @@ case "$answer" in
         ;;
 esac
 
-if cat /etc/hosts | grep -q "gitlab.local"; then
-    sudo sed -i '/gitlab.local/d' /etc/hosts
+if cat /etc/hosts | grep -q $ARGOCD_HOSTNAME; then
+    sudo sed -i "/$ARGOCD_HOSTNAME/d" /etc/hosts
 fi
