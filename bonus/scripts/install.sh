@@ -14,11 +14,11 @@ else
     ENDCOLOR=''
 fi
 
-if [ ! -f "../.env" ]; then
+if [ ! -f ".env" ]; then
     printf '%s\n' "${RED}No .env found for this project${ENDCOLOR}"
     exit 1
 else
-    source ../.env >/dev/null 2>&1
+    source .env >/dev/null 2>&1
 fi
 
 printf '%s\n' "${GREEN}.__                 __         .__  .__              .__     ${ENDCOLOR}"
