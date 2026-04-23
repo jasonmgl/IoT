@@ -61,7 +61,7 @@ if ! command -v helm >/dev/null 2>&1; then
     sudo kubectl apply -f confs/gitlab/namespace.yaml
     sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password=$GITLAB_PASSWORD
     sudo kubectl -n gitlab create secret generic gitlab-minio-secret --from-literal=accesskey=$MINIO_ACCESSKEY --from-literal=secretkey=$MINIO_SECRETKEY
-    sleep 1
+    sleep 5
     sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 20m
     if ! cat /etc/hosts | grep -q $ARGOCD_HOSTNAME; then
         echo "127.0.0.1 $ARGOCD_HOSTNAME $GITLAB_HOSTNAME $MINIO_HOSTNAME" | sudo tee -a /etc/hosts
