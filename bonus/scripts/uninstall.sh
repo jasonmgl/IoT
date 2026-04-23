@@ -1,7 +1,8 @@
 #!/bin/bash
-set -euo pipefail
 
 DEBIAN_FRONTEND=noninteractive
+
+set -euo pipefail
 
 if [[ -t 1 ]]; then
     RED=$'\e[31m'

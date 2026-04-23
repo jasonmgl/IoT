@@ -1,4 +1,7 @@
 #!/bin/bash
+
+DEBIAN_FRONTEND=noninteractive
+
 set -euo pipefail
 
 sudo rm -f /etc/apt/sources.list.d/docker.list    
