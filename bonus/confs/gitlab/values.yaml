@@ -41,12 +41,22 @@ prometheus:
 registry:
   enabled: false
 
+postgresql:
+  primary:
+    persistence:
+      size: 2Gi
+
+redis:
+  master:
+    persistence:
+      size: 2Gi
+
 gitaly:
   persistence:
-    size: 10Gi
+    size: 2Gi
 
 minio:
   credentials:
     secret: gitlab-minio-secret
   persistence:
-    size: 5Gi
+    size: 2Gi

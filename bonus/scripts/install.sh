@@ -34,7 +34,6 @@ sudo install -m 0755 -d /etc/apt/keyrings
 
 if ! command -v docker >/dev/null 2>&1; then
     sudo sh scripts/get-docker.sh
-    sleep 2
 fi
 printf '%s\n' "${GREEN}Docker Version: $(docker version --format '{{.Server.Version}}')${ENDCOLOR}"
 
@@ -46,9 +45,8 @@ printf '%s\n' "${GREEN}$(kubectl version --client)${ENDCOLOR}"
 
 if ! command -v k3d >/dev/null 2>&1; then
     sudo curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-    sleep 2
     if ! sudo k3d cluster list bonus >/dev/null 2>&1; then
-        sudo -E k3d cluster create --config confs/k3d-config.yaml
+        sudo k3d cluster create --config confs/k3d-config.yaml
     fi
 fi
 
@@ -63,20 +61,23 @@ printf '%s\n' "${GREEN}$(k3d version)${ENDCOLOR}"
 
 if ! command -v helm >/dev/null 2>&1; then
     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-    sudo -E helm repo add gitlab http://charts.gitlab.io/
-    sudo -E helm repo add argo https://argoproj.github.io/argo-helm
-    sudo -E helm repo update
-    sudo -E kubectl apply -f confs/argocd/namespace.yaml
-    sudo -E helm upgrade --install argocd argo/argo-cd --version 9.5.2 --namespace argocd --wait -f confs/argocd/values.yaml --timeout 10m
-    sudo -E kubectl apply -f confs/argocd/argocd-app.yaml
-    sudo -E kubectl apply -f confs/gitlab/namespace.yaml
-    sudo -E kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password=$GITLAB_PASSWORD
-    sudo -E kubectl -n gitlab create secret generic gitlab-minio-secret --from-literal=accesskey=$MINIO_ACCESSKEY --from-literal=secretkey=$MINIO_SECRETKEY
-    sleep 5
-    sudo -E helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 20m
-    if ! cat /etc/hosts | grep -q $ARGOCD_HOSTNAME; then
-        echo "127.0.0.1 $ARGOCD_HOSTNAME $GITLAB_HOSTNAME $MINIO_HOSTNAME" | sudo tee -a /etc/hosts
-    fi
+fi
+
+sudo helm repo add gitlab http://charts.gitlab.io/ >/dev/null 2>&1 || true
+sudo helm repo add argo https://argoproj.github.io/argo-helm >/dev/null 2>&1 || true
+sudo helm repo update
+
+sudo kubectl apply -f confs/argocd/namespace.yaml
+sudo helm upgrade --install argocd argo/argo-cd --version 9.5.2 --namespace argocd --wait -f confs/argocd/values.yaml --timeout 10m
+sudo kubectl apply -f confs/argocd/argocd-app.yaml
+
+sudo kubectl apply -f confs/gitlab/namespace.yaml
+sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password="$GITLAB_PASSWORD" --dry-run=client -o yaml | sudo kubectl apply -f -
+sudo kubectl -n gitlab create secret generic gitlab-minio-secret --from-literal=accesskey="$MINIO_ACCESSKEY" --from-literal=secretkey="$MINIO_SECRETKEY" --dry-run=client -o yaml | sudo kubectl apply -f -
+sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 20m
+
+if ! grep -q "$ARGOCD_HOSTNAME" /etc/hosts; then
+    echo "127.0.0.1 $ARGOCD_HOSTNAME $GITLAB_HOSTNAME $MINIO_HOSTNAME" | sudo tee -a /etc/hosts
 fi
 printf '%s\n' "${GREEN}Helm: $(helm version --short)${ENDCOLOR}"
 printf '%s\n' "-------------------------------------------------"
@@ -101,13 +102,13 @@ if ! command -v argocd >/dev/null 2>&1; then
     sudo curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/download/v3.3.6/argocd-linux-amd64
     sudo chmod +x argocd
     sudo mv argocd /usr/local/bin/
-    sudo -E argocd login $ARGOCD_HOSTNAME:8843 \
+    sudo argocd login $ARGOCD_HOSTNAME:8843 \
         --username $ARGOCD_LOGIN \
         --password $ARGOCD_SECRET \
         --insecure
-    sudo -E argocd account update-password \
+    sudo argocd account update-password \
         --current-password $ARGOCD_SECRET \
         --new-password $ARGOCD_PASSWORD
-    sudo -E kubectl delete secret argocd-initial-admin-secret -n argocd
+    sudo kubectl delete secret argocd-initial-admin-secret -n argocd
 fi
 printf '%s\n' "${GREEN}$(argocd version --client)${ENDCOLOR}"

@@ -4,10 +4,6 @@ DEBIAN_FRONTEND=noninteractive
 
 set -uo pipefail
 
-REAL_USER="${SUDO_USER:-$USER}"
-REAL_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
-export KUBECONFIG="${KUBECONFIG:-$REAL_HOME/.kube/config}"
-
 if [[ -t 1 ]]; then
     RED=$'\e[31m'
     GREEN=$'\e[32m'
@@ -36,9 +32,9 @@ read -rp 'Do you want to uninstall helm ? [y/n] ' answer
 case "$answer" in
     y|Y)
         if command -v helm >/dev/null 2>&1; then
-            if sudo -E kubectl version --request-timeout=2s >/dev/null 2>&1; then
-                sudo -E helm uninstall gitlab -n gitlab --ignore-not-found || true
-                sudo -E helm uninstall argocd -n argocd --ignore-not-found || true
+            if sudo kubectl version --request-timeout=2s >/dev/null 2>&1; then
+                sudo helm uninstall gitlab -n gitlab --ignore-not-found || true
+                sudo helm uninstall argocd -n argocd --ignore-not-found || true
             else
                 printf '%s\n' "${RED}Cluster unreachable, skip helm releases cleanup${ENDCOLOR}"
             fi
@@ -58,9 +54,11 @@ read -rp 'Do you want to uninstall kubectl ? [y/n] ' answer
 case "$answer" in
     y|Y)
         if command -v kubectl >/dev/null 2>&1; then
-            if sudo -E kubectl version --request-timeout=2s >/dev/null 2>&1; then
-                sudo -E kubectl delete namespace gitlab --ignore-not-found --timeout=60s || true
-                sudo -E kubectl delete namespace argocd --ignore-not-found --timeout=60s || true
+            if sudo kubectl version --request-timeout=2s >/dev/null 2>&1; then
+                sudo kubectl delete pvc -n gitlab --all || true
+                sudo kubectl delete secret -n gitlab --all || true
+                sudo kubectl delete namespace gitlab --ignore-not-found --timeout=60s || true
+                sudo kubectl delete namespace argocd --ignore-not-found --timeout=60s || true
             else
                 printf '%s\n' "${RED}Cluster unreachable, skip namespaces cleanup${ENDCOLOR}"
             fi
