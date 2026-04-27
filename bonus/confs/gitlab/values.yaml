@@ -22,6 +22,11 @@ global:
   registry:
     enabled: false
 
+  appConfig:
+    initialRootPassword:
+      secret: gitlab-gitlab-initial-root-password
+      key: password
+
 installCertmanager: false
 
 nginx-ingress:
@@ -35,11 +40,6 @@ prometheus:
 
 registry:
   enabled: false
-
-gitlab:
-  initialRootPassword:
-    secret: gitlab-gitlab-initial-root-password
-    key: password
 
 gitaly:
   persistence:
