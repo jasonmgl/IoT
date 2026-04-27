@@ -59,8 +59,13 @@ if ! command -v helm >/dev/null 2>&1; then
     sudo helm upgrade --install argocd argo/argo-cd --version 9.5.2 --namespace argocd --wait -f confs/argocd/values.yaml --timeout 10m
     sudo kubectl apply -f confs/argocd/argocd-app.yaml
     sudo kubectl apply -f confs/gitlab/namespace.yaml
-    sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password=$GITLAB_PASSWORD
-    sudo kubectl -n gitlab create secret generic gitlab-minio-secret --from-literal=accesskey=$MINIO_ACCESSKEY --from-literal=secretkey=$MINIO_SECRETKEY
+    sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password \
+        --from-literal=password="$GITLAB_PASSWORD" \
+        --dry-run=client -o yaml | sudo kubectl apply -f -
+    sudo kubectl -n gitlab create secret generic gitlab-minio-secret \
+        --from-literal=accesskey="$MINIO_ACCESSKEY" \
+        --from-literal=secretkey="$MINIO_SECRETKEY" \
+        --dry-run=client -o yaml | sudo kubectl apply -f -
     sleep 5
     sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 20m
     if ! cat /etc/hosts | grep -q $ARGOCD_HOSTNAME; then
