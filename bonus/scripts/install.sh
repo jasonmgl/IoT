@@ -34,35 +34,46 @@ sudo install -m 0755 -d /etc/apt/keyrings
 
 if ! command -v docker >/dev/null 2>&1; then
     sudo sh scripts/get-docker.sh
+    sleep 2
 fi
 printf '%s\n' "${GREEN}Docker Version: $(docker version --format '{{.Server.Version}}')${ENDCOLOR}"
 
 if ! command -v kubectl >/dev/null 2>&1; then
-    sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    sudo chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    chmod +x kubectl && sudo mv kubectl /usr/local/bin/
 fi
-printf '%s\n' "${GREEN}Kubectl: $(kubectl version --client --short 2>/dev/null || kubectl version --client)${ENDCOLOR}"
+printf '%s\n' "${GREEN}$(kubectl version --client)${ENDCOLOR}"
 
 if ! command -v k3d >/dev/null 2>&1; then
     sudo curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-    sleep 1
-    sudo k3d cluster create --config confs/k3d-config.yaml
+    sleep 2
+    if ! sudo k3d cluster list bonus >/dev/null 2>&1; then
+        sudo -E k3d cluster create --config confs/k3d-config.yaml
+    fi
 fi
+
+# REAL_USER="${SUDO_USER:-$USER}"
+# REAL_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
+# sudo mkdir -p "$REAL_HOME/.kube"
+# sudo k3d kubeconfig get bonus | sudo tee "$REAL_HOME/.kube/config" >/dev/null
+# sudo chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/.kube"
+# sudo chmod 600 "$REAL_HOME/.kube/config"
+
 printf '%s\n' "${GREEN}$(k3d version)${ENDCOLOR}"
 
 if ! command -v helm >/dev/null 2>&1; then
     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-    sudo helm repo add gitlab http://charts.gitlab.io/
-    sudo helm repo add argo https://argoproj.github.io/argo-helm
-    sudo helm repo update
-    sudo kubectl apply -f confs/argocd/namespace.yaml
-    sudo helm upgrade --install argocd argo/argo-cd --version 9.5.2 --namespace argocd --wait -f confs/argocd/values.yaml --timeout 10m
-    sudo kubectl apply -f confs/argocd/argocd-app.yaml
-    sudo kubectl apply -f confs/gitlab/namespace.yaml
-    sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password=$GITLAB_PASSWORD
-    sudo kubectl -n gitlab create secret generic gitlab-minio-secret --from-literal=accesskey=$MINIO_ACCESSKEY --from-literal=secretkey=$MINIO_SECRETKEY
+    sudo -E helm repo add gitlab http://charts.gitlab.io/
+    sudo -E helm repo add argo https://argoproj.github.io/argo-helm
+    sudo -E helm repo update
+    sudo -E kubectl apply -f confs/argocd/namespace.yaml
+    sudo -E helm upgrade --install argocd argo/argo-cd --version 9.5.2 --namespace argocd --wait -f confs/argocd/values.yaml --timeout 10m
+    sudo -E kubectl apply -f confs/argocd/argocd-app.yaml
+    sudo -E kubectl apply -f confs/gitlab/namespace.yaml
+    sudo -E kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password=$GITLAB_PASSWORD
+    sudo -E kubectl -n gitlab create secret generic gitlab-minio-secret --from-literal=accesskey=$MINIO_ACCESSKEY --from-literal=secretkey=$MINIO_SECRETKEY
     sleep 5
-    sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 20m
+    sudo -E helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 20m
     if ! cat /etc/hosts | grep -q $ARGOCD_HOSTNAME; then
         echo "127.0.0.1 $ARGOCD_HOSTNAME $GITLAB_HOSTNAME $MINIO_HOSTNAME" | sudo tee -a /etc/hosts
     fi
@@ -72,7 +83,7 @@ printf '%s\n' "-------------------------------------------------"
 printf '%s\n' "Gitlab's credential"
 printf '\n'
 printf '%s\n' "login: $GITLAB_LOGIN"
-printf '%s\n' "password: $(sudo kubectl -n gitlab get secret gitlab-gitlab-initial-root-password -o jsonpath="{.data.password}" | base64 -d)"
+printf '%s\n' "password: $GITLAB_PASSWORD"
 printf '\n'
 printf '%s\n' "address: http://$GITLAB_HOSTNAME:8888/"
 printf '%s\n' "-------------------------------------------------"
@@ -85,18 +96,18 @@ printf '%s\n' "address: http://$MINIO_HOSTNAME:8888/"
 printf '%s\n' "-------------------------------------------------"
 
 if ! command -v argocd >/dev/null 2>&1; then
-    ARGOCD_SECRET=$(kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 -d)
+    ARGOCD_SECRET=$(sudo kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 -d)
 
     sudo curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/download/v3.3.6/argocd-linux-amd64
     sudo chmod +x argocd
     sudo mv argocd /usr/local/bin/
-    sudo argocd login $ARGOCD_HOSTNAME:8843 \
+    sudo -E argocd login $ARGOCD_HOSTNAME:8843 \
         --username $ARGOCD_LOGIN \
         --password $ARGOCD_SECRET \
         --insecure
-    sudo argocd account update-password \
+    sudo -E argocd account update-password \
         --current-password $ARGOCD_SECRET \
         --new-password $ARGOCD_PASSWORD
-    sudo kubectl delete secret argocd-initial-admin-secret -n argocd
+    sudo -E kubectl delete secret argocd-initial-admin-secret -n argocd
 fi
 printf '%s\n' "${GREEN}$(argocd version --client)${ENDCOLOR}"
