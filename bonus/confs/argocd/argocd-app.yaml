@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/jasonmgl/jmougel_IoT_app.git
+    repoURL: http://root:glpat-localdev1234567890@gitlab-webservice-default.gitlab.svc.cluster.local:8181/root/jmougel_IoT_app.git
     targetRevision: main
     path: .
   destination:

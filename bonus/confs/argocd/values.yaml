@@ -5,9 +5,19 @@ configs:
   cm:
     "timeout.reconciliation": 30s
     "timeout.reconciliation.jitter": 0s
+    "timeout.hard.reconciliation": 30s
 
   params:
     "server.insecure": true
+
+controller:
+  extraArgs:
+    - --app-resync
+    - "30"
+    - --app-hard-resync
+    - "30"
+    - --app-resync-jitter
+    - "0"
 
 server:
   ingress:

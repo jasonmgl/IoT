@@ -44,18 +44,11 @@ fi
 printf '%s\n' "${GREEN}$(kubectl version --client)${ENDCOLOR}"
 
 if ! command -v k3d >/dev/null 2>&1; then
-    sudo curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+    sudo curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.8.3 bash
     if ! sudo k3d cluster list bonus >/dev/null 2>&1; then
         sudo k3d cluster create --config confs/k3d-config.yaml
     fi
 fi
-
-# REAL_USER="${SUDO_USER:-$USER}"
-# REAL_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
-# sudo mkdir -p "$REAL_HOME/.kube"
-# sudo k3d kubeconfig get bonus | sudo tee "$REAL_HOME/.kube/config" >/dev/null
-# sudo chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/.kube"
-# sudo chmod 600 "$REAL_HOME/.kube/config"
 
 printf '%s\n' "${GREEN}$(k3d version)${ENDCOLOR}"
 
@@ -77,7 +70,7 @@ sudo kubectl -n gitlab create secret generic gitlab-minio-secret --from-literal=
 sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 20m
 
 if ! grep -q "$ARGOCD_HOSTNAME" /etc/hosts; then
-    echo "127.0.0.1 $ARGOCD_HOSTNAME $GITLAB_HOSTNAME $MINIO_HOSTNAME" | sudo tee -a /etc/hosts
+    echo "127.0.0.1 $ARGOCD_HOSTNAME $GITLAB_HOSTNAME $MINIO_HOSTNAME jmougel.local" | sudo tee -a /etc/hosts
 fi
 printf '%s\n' "${GREEN}Helm: $(helm version --short)${ENDCOLOR}"
 printf '%s\n' "-------------------------------------------------"
@@ -95,6 +88,35 @@ printf '%s\n' "password: $MINIO_SECRETKEY"
 printf '\n'
 printf '%s\n' "address: http://$MINIO_HOSTNAME:8888/"
 printf '%s\n' "-------------------------------------------------"
+
+if ! command -v glab >/dev/null 2>&1; then
+    curl -sL "https://gitlab.com/gitlab-org/cli/-/releases/v1.93.0/downloads/glab_1.93.0_linux_amd64.tar.gz" | sudo tar xz -C /usr/local bin/glab
+fi
+printf '%s\n' "${GREEN}$(glab --version)${ENDCOLOR}"
+
+if ! curl -sf -o /dev/null -H "PRIVATE-TOKEN: $GITLAB_TOKEN" "http://gitlab.local:8888/api/v4/projects/root%2Fjmougel_IoT_app"; then
+    TOOLBOX=$(sudo kubectl -n gitlab get pod -l app=toolbox -o jsonpath='{.items[0].metadata.name}')
+    sudo kubectl -n gitlab exec "$TOOLBOX" -- gitlab-rails runner "
+        user = User.find_by(username: 'root')
+        token = user.personal_access_tokens.find_or_initialize_by(name: 'cli')
+        if token.new_record?
+            token.scopes = ['api', 'write_repository']
+            token.expires_at = 30.days.from_now
+            token.set_token('$GITLAB_TOKEN')
+            token.save!
+        end
+    "
+    sleep 2
+    glab auth login \
+        --hostname gitlab.local:8888 \
+        --token "$GITLAB_TOKEN" \
+        --api-protocol http \
+        --git-protocol http
+    [ -d jmougel_IoT_app ] || git clone https://github.com/jasonmgl/jmougel_IoT_app.git
+    git -C jmougel_IoT_app remote set-url origin "http://root:$GITLAB_TOKEN@gitlab.local:8888/root/jmougel_IoT_app.git"
+    git -C jmougel_IoT_app push origin --all
+    chown -R "${SUDO_USER:-$USER}:${SUDO_USER:-$USER}" jmougel_IoT_app
+fi
 
 if ! command -v argocd >/dev/null 2>&1; then
     ARGOCD_SECRET=$(sudo kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 -d)
