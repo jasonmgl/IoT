@@ -10,4 +10,4 @@ purge:
 help:
 	@tail -n 1 ./Makefile |  sed -e 's/.PHONY:/Commands:/g'
 
-.PHONY: up purge re test help
+.PHONY: up purge re help
