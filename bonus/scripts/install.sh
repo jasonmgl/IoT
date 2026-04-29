@@ -21,6 +21,8 @@ else
     source .env >/dev/null 2>&1
 fi
 
+GITLAB_INTERNAL_REPOSITORY_URL="${GITLAB_URL}${GITLAB_PROJECT_PATH}.git"
+
 printf '%s\n' "${GREEN}.__                 __         .__  .__              .__     ${ENDCOLOR}"
 printf '%s\n' "${GREEN}|__| ____   _______/  |______  |  | |  |        _____|  |__  ${ENDCOLOR}"
 printf '%s\n' "${GREEN}|  |/    \ /  ___/\   __\__  \ |  | |  |       /  ___/  |  \ ${ENDCOLOR}"
@@ -63,6 +65,20 @@ sudo helm repo update
 sudo kubectl apply -f confs/argocd/namespace.yaml
 sudo helm upgrade --install argocd argo/argo-cd --version 9.5.2 --namespace argocd --wait -f confs/argocd/values.yaml --timeout 10m
 sudo kubectl apply -f confs/argocd/argocd-app.yaml
+# sudo kubectl apply -f - <<EOF
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: argocd-app-repository
+#   namespace: argocd
+#   labels:
+#     argocd.argoproj.io/secret-type: repository
+# stringData:
+#   type: git
+#   url: "$GITLAB_INTERNAL_REPOSITORY_URL"
+#   username: "$GITLAB_LOGIN"
+#   password: "$GITLAB_TOKEN"
+# EOF
 
 sudo kubectl apply -f confs/gitlab/namespace.yaml
 sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password="$GITLAB_PASSWORD" --dry-run=client -o yaml | sudo kubectl apply -f -
@@ -115,7 +131,8 @@ if ! curl -sf -o /dev/null -H "PRIVATE-TOKEN: $GITLAB_TOKEN" "http://gitlab.loca
     [ -d jmougel_IoT_app ] || git clone https://github.com/jasonmgl/jmougel_IoT_app.git
     git -C jmougel_IoT_app remote set-url origin "http://root:$GITLAB_TOKEN@gitlab.local:8888/root/jmougel_IoT_app.git"
     git -C jmougel_IoT_app push origin --all
-    chown -R "${SUDO_USER:-$USER}:${SUDO_USER:-$USER}" jmougel_IoT_app
+    # chown -R "${SUDO_USER:-$USER}:${SUDO_USER:-$USER}" jmougel_IoT_app
+    sudo rm -rf jmougel_IoT_app
 fi
 
 if ! command -v argocd >/dev/null 2>&1; then
