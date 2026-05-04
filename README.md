@@ -4,14 +4,14 @@
 
 ## Description
 
-The goal of this project is to discover Kubernetes through a progressive approach using **K3s**, **K3d**, **Vagrant**, **Argo CD** and **Helm**.
+The goal of this project is to discover Kubernetes through a progressive approach using **K3s**, **K3d**, **Vagrant**, **Argo CD**, and **Helm**.
 
-It is divided into three parts:
+It is divided into three main parts and one bonus part:
 
 * **P1** – Build and provision a 2-node K3s cluster with Vagrant.
 * **P2** – Deploy multiple applications using Kubernetes manifests.
 * **P3** – Use K3d and Argo CD to explore continuous deployment.
-* **Bonus** – 
+* **Bonus** – Local GitLab, Argo CD, and Helm on K3d.
 
 ## Tech Stack
 
@@ -23,7 +23,7 @@ It is divided into three parts:
 * [P1: Build a 2-node K3s cluster with Vagrant](./p1/README.md)
 * [P2: Deploy apps with Kubernetes manifests](./p2/README.md)
 * [P3: Use K3d and Argo CD for continuous deployment](./p3/README.md)
-* [Bonus: ](./bonus/README.md)
+* [Bonus: Local GitLab, Argo CD, and Helm on K3d](./bonus/README.md)
 
 Each part introduces new concepts and tools related to container orchestration and deployment automation.
 
@@ -43,6 +43,7 @@ InceptionOfThings
 ├── p1/
 ├── p2/
 ├── p3/
+├── bonus/
 ├── .gitignore
 └── README.md
 ```
