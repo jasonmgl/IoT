@@ -33,7 +33,7 @@ sudo apt-get install -yqq ca-certificates curl >/dev/null
 sudo install -m 0755 -d /etc/apt/keyrings
 
 if ! grep -q "$ARGOCD_HOSTNAME" /etc/hosts; then
-    echo "127.0.0.1 $ARGOCD_HOSTNAME $GITLAB_HOSTNAME $MINIO_HOSTNAME jmougel.local" | sudo tee -a /etc/hosts
+    echo "127.0.0.1 $ARGOCD_HOSTNAME $GITLAB_HOSTNAME $MINIO_HOSTNAME $GITLAB_PROJECT_HOSTNAME" | sudo tee -a /etc/hosts
 fi
 
 if ! command -v docker >/dev/null 2>&1; then
@@ -72,7 +72,7 @@ printf '%s\n' "${GREEN}$(glab --version)${ENDCOLOR}"
 sudo kubectl apply -f confs/gitlab/namespace.yaml
 sudo kubectl -n gitlab create secret generic gitlab-gitlab-initial-root-password --from-literal=password="$GITLAB_PASSWORD" --dry-run=client -o yaml | sudo kubectl apply -f -
 sudo kubectl -n gitlab create secret generic gitlab-minio-secret --from-literal=accesskey="$MINIO_ACCESSKEY" --from-literal=secretkey="$MINIO_SECRETKEY" --dry-run=client -o yaml | sudo kubectl apply -f -
-sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 20m
+sudo helm upgrade --install gitlab gitlab/gitlab --version 9.10.3 --namespace gitlab --wait -f confs/gitlab/values.yaml --timeout 42m
 
 if ! curl -sf -o /dev/null -H "PRIVATE-TOKEN: $GITLAB_TOKEN" "http://gitlab.local:8888/api/v4/projects/root%2Fjmougel_IoT_app"; then
     TOOLBOX=$(sudo kubectl -n gitlab get pod -l app=toolbox -o jsonpath='{.items[0].metadata.name}')

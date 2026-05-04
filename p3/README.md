@@ -21,7 +21,7 @@ When the Deployment definition is updated in the repository, the application is 
 * **Deployment**: used to deploy and manage an application by creating and maintaining ReplicaSets and Pods.
 * **Service**: used to provide a stable network endpoint for a set of Pods and make the application reachable from within the cluster.
 * **Ingress**: used to route external HTTP requests to the appropriate Service based on the requested host.
-* **Namespace**: used to logically organize and separate resources inside a Kubernetes cluster. It is mainly intended for organization, not for full network isolation, since applications from different namespaces can still communicate with each other by default.
+* **Namespace**: used to logically organize and separate resources inside a Kubernetes cluster. It is mainly intended for organization rather than full network isolation, since applications from different namespaces can still communicate with each other by default.
 
 The Docker images used for this exercise are:
 
@@ -51,17 +51,25 @@ cd InceptionOfThings/p3
 make up
 ```
 
-Make sure the following tools are installed on your system:
+Make sure `make` is installed on your system before starting the setup.
 
-* Make
+Make sure the following entries are present in your `/etc/hosts` file:
 
-Make sure the following hosts are in your /etc/hosts file:
+```text
+127.0.0.1 argocd.local jmougel.local
+```
 
-* 127.0.0.1 argocd.local
+A `.env.sample` file is provided to help customize the local environment.
 
 ### Usage
 
 A **Makefile** is provided to make the project easier to run. The following commands are available:
+
+```bash
+make re
+```
+
+Runs `make purge` and then `make up`.
 
 ```bash
 make up
@@ -73,7 +81,7 @@ Installs the required environment for the project and starts the K3d cluster.
 make purge
 ```
 
-Removes the executables installed in `/usr/local/bin` by the environment setup script and also uninstalls Docker using a dedicated removal script. Use this command with caution.
+Completely removes the tools installed by the setup script and uninstalls Docker from the host machine. Use this command with caution.
 
 ```bash
 make help
@@ -89,16 +97,19 @@ Go to the following address to access the Argo CD dashboard:
 http://argocd.local/
 ```
 
-### Credentials
+### Application Access
 
-* **Login:** `admin`
-* **Password:** `adminadmin`
-
-Before accessing the dashboard, make sure you have added the following host entry to your `/etc/hosts` file:
+Go to the following address to access the application deployed by Argo CD:
 
 ```text
-127.0.0.1 argocd.local
+http://jmougel.local/
 ```
+
+### Credentials
+
+For demonstration purposes, the default credentials used in this project are:
+
+* **Argo CD** — `admin` / `adminadmin`
 
 ## Validation
 
@@ -117,9 +128,11 @@ kubectl get ingress -A
 p3
 ├── Makefile
 ├── README.md
+├── .env.sample
 ├── scripts
 │   ├── get-docker.sh
-│   ├── init.sh
+│   ├── install.sh
+│   ├── uninstall.sh
 │   └── remove-docker.sh
 └── confs
     ├── argocd

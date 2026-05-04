@@ -123,6 +123,6 @@ case "$answer" in
         ;;
 esac
 
-if grep -q "${ARGOCD_HOSTNAME:-__none__}" /etc/hosts 2>/dev/null; then
+if grep -q "$ARGOCD_HOSTNAME" /etc/hosts 2>/dev/null; then
     sudo sed -i "/$ARGOCD_HOSTNAME/d" /etc/hosts
 fi

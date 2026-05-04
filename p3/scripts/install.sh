@@ -12,6 +12,13 @@ fi
 
 set -euo pipefail
 
+if [ ! -f ".env" ]; then
+    printf '%s\n' "${RED}No .env found for this project${ENDCOLOR}"
+    exit 1
+else
+    source .env >/dev/null 2>&1
+fi
+
 printf '%s\n' "${GREEN}.__                 __         .__  .__              .__     ${ENDCOLOR}"
 printf '%s\n' "${GREEN}|__| ____   _______/  |______  |  | |  |        _____|  |__  ${ENDCOLOR}"
 printf '%s\n' "${GREEN}|  |/    \ /  ___/\   __\__  \ |  | |  |       /  ___/  |  \ ${ENDCOLOR}"
@@ -22,6 +29,10 @@ printf '%s\n' "${GREEN}        \/     \/            \/            \/      \/    
 sudo apt-get update -qq
 sudo apt-get install -yqq ca-certificates curl >/dev/null
 sudo install -m 0755 -d /etc/apt/keyrings
+
+if ! grep -q "$ARGOCD_HOSTNAME" /etc/hosts; then
+    echo "127.0.0.1 $ARGOCD_HOSTNAME $GITHUB_PROJECT_HOSTNAME" | sudo tee -a /etc/hosts
+fi
 
 if ! command -v docker >/dev/null 2>&1; then
     sudo sh scripts/get-docker.sh
@@ -61,13 +72,13 @@ if ! command -v argocd >/dev/null 2>&1; then
     sudo curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/download/v3.3.6/argocd-linux-amd64
     sudo chmod +x argocd
     sudo mv argocd /usr/local/bin/
-    sudo argocd login argocd.local:8843 \
-        --username "admin" \
+    sudo argocd login $ARGOCD_HOSTNAME:8843 \
+        --username "$ARGOCD_LOGIN" \
         --password "$ARGOCD_SECRET" \
         --insecure
     sudo argocd account update-password \
         --current-password "$ARGOCD_SECRET" \
-        --new-password "adminadmin"
+        --new-password "$ARGOCD_PASSWORD"
     sudo kubectl delete secret argocd-initial-admin-secret -n argocd
 fi
 printf '%s\n' "${GREEN}$(argocd version --client)${ENDCOLOR}"
