@@ -56,9 +56,9 @@ Make sure the following tools are installed on your system:
 
 Make sure the following hosts are in your /etc/hosts file:
 
-* 192.168.56.110 app1.local
-* 192.168.56.110 app2.local
-* 192.168.56.110 app3.local
+* 192.168.56.110    app1.local
+* 192.168.56.110    app2.local
+* 192.168.56.110    app3.local
 
 ### Usage
 
