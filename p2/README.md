@@ -64,41 +64,14 @@ Make sure the following hosts are in your /etc/hosts file:
 
 A **Makefile** is provided to make the project easier to run. The following commands are available:
 
-```bash
-make up
-```
-
-Starts the Vagrant virtual machine.
-
-```bash
-make down
-```
-
-Stops the Vagrant virtual machine properly.
-
-```bash
-make provision
-```
-
-Reprovisions the Vagrant virtual machine if the scripts have been updated.
-
-```bash
-make fclean
-```
-
-Removes the Vagrant virtual machine and its cached files.
-
-```bash
-make test
-```
-
-Runs `curl` requests against each application to verify that host-based routing is working correctly.
-
-```bash
-make help
-```
-
-Displays the list of available commands.
+| Command | Description |
+|---------|-------------|
+| `make up` | Starts the Vagrant virtual machine. |
+| `make down` | Stops the Vagrant virtual machine properly. |
+| `make provision` | Reprovisions the Vagrant virtual machine if the scripts have been updated. |
+| `make fclean` | Removes the Vagrant virtual machine and its cached files. |
+| `make test` | Runs `curl` requests against each application to verify that host-based routing is working correctly. |
+| `make help` | Displays the list of available commands. |
 
 ### Validation
 
