@@ -59,12 +59,14 @@ cd InceptionOfThings/bonus
 make up
 ```
 
-Make sure `make` is installed on your system before starting the setup.
+Make sure the following tools are installed on your system:
+
+* Make
 
 Make sure the following entries are present in your `/etc/hosts` file:
-```text
-127.0.0.1 argocd.local gitlab.local minio.local jmougel.local
-```
+| IP Address | Hosts |
+|------------|-------|
+| `127.0.0.1` | `argocd.local`, `gitlab.local`, `minio.local`, `jmougel.local` |
 
 A `.env.sample` file is provided to help customize the local environment.
 
@@ -72,57 +74,25 @@ A `.env.sample` file is provided to help customize the local environment.
 
 A **Makefile** is provided to make the project easier to run. The following commands are available:
 
-```bash
-make re
-```
-
-Runs `make purge` and then `make up`.
-
-```bash
-make up
-```
-
-Installs the required environment for the project and starts the K3d cluster.
-
-```bash
-make purge
-```
-
-Completely removes the tools installed by the setup script and uninstalls Docker from the host machine. Use this command with caution.
-
-```bash
-make help
-```
-
-Displays the list of available commands.
+| Command | Description |
+|---------|-------------|
+| `make re` | Runs `make purge` and then `make up`. |
+| `make up` | Installs the required environment for the project and starts the K3d cluster. |
+| `make purge` | Completely removes the tools installed by the setup script and uninstalls Docker from the host machine. Use this command with caution. |
+| `make help` | Displays the list of available commands. |
 
 ### Dashboards and Access
 
 All services are exposed locally through the same ingress entry point on port `8888`, using host-based routing.
 
-Go to the following address to access the Argo CD dashboard:
+Go to the following address to access dashboard:
 
-```text
-http://argocd.local:8888/
-```
-
-Go to the following address to access the GitLab dashboard:
-
-```text
-http://gitlab.local:8888/
-```
-
-Go to the following address to access the application monitored by Argo CD:
-
-```text
-http://jmougel.local:8888/
-```
-
-Go to the following address to access the MinIO dashboard:
-
-```text
-http://minio.local:8888/
-```
+| Service | URL | Description |
+|---------|-----|-------------|
+| Argo CD | `http://argocd.local:8888/` | Access the Argo CD dashboard. |
+| GitLab | `http://gitlab.local:8888/` | Access the GitLab dashboard. |
+| Application | `http://jmougel.local:8888/` | Access the application monitored by Argo CD. |
+| MinIO | `http://minio.local:8888/` | Access the MinIO dashboard. |
 
 ### Credentials
 
@@ -143,6 +113,18 @@ kubectl get pods -n gitlab
 kubectl get pods -n dev
 kubectl get ingress -A
 ```
+
+Expected result:
+
+- The `argocd`, `gitlab`, and `dev` namespaces should exist.
+- All Pods in the `argocd` namespace should be in the `Running` state.
+- All required Pods in the `gitlab` namespace should be created and running correctly.
+- The application Pod in the `dev` namespace should be in the `Running` state.
+- The Ingress resources should be present and correctly exposed.
+- The Argo CD dashboard should be reachable at `http://argocd.local:8888/`.
+- The GitLab dashboard should be reachable at `http://gitlab.local:8888/`.
+- The application deployed by Argo CD should be reachable at `http://jmougel.local:8888/`.
+- The MinIO dashboard should be reachable at `http://minio.local:8888/`.
 
 ## Project Structure
 
