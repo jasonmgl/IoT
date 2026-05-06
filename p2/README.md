@@ -77,12 +77,25 @@ A **Makefile** is provided to make the project easier to run. The following comm
 
 ### Validation
 
+Run the following commands to verify that the environment is working correctly:
+
 ```bash
 kubectl get pods -o wide
 kubectl get svc
 kubectl get ingress
 make test
 ```
+
+Expected result:
+
+- All Pods should be in the `Running` state.
+- The application `app2` should have **3 running replicas**.
+- The Services for `app1`, `app2`, and `app3` should be listed correctly.
+- The Ingress resource should be present and route requests based on the requested host.
+- `make test` should confirm that:
+  - requests to `app1.local` return **app1**
+  - requests to `app2.local` return **app2**
+  - requests to `app3.local` return **app3**
 
 ## Project Structure
 
