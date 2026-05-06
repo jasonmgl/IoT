@@ -64,11 +64,21 @@ A **Makefile** is provided to make the project easier to run. The following comm
 
 ### Validation
 
+You can verify that the environment is running correctly with:
+
 ```bash
 vagrant status
 vagrant ssh jmougelS
 sudo kubectl get nodes -o wide
 ```
+
+Expected result:
+
+- Both virtual machines should appear in the `running` state in `vagrant status`.
+- You should be able to connect to `jmougelS` through SSH without a password prompt.
+- The `kubectl get nodes -o wide` command should show both nodes in the `Ready` state.
+- The first node should act as the K3s server.
+- The second node should be joined to the cluster as a worker/agent node.
 
 ## Project Structure
 
