@@ -53,41 +53,14 @@ Make sure the following tools are installed on your system:
 
 A **Makefile** is provided to make the project easier to run. The following commands are available:
 
-```bash
-make up
-```
-
-Starts the Vagrant cluster.
-
-```bash
-make down
-```
-
-Stops the Vagrant cluster properly.
-
-```bash
-make provision
-```
-
-Reprovisions the Vagrant cluster if the scripts have been updated.
-
-```bash
-make clean
-```
-
-Removes the file containing the K3s node token.
-
-```bash
-make fclean
-```
-
-Runs `clean`, then removes the Vagrant virtual machines and cached files.
-
-```bash
-make help
-```
-
-Displays the list of available commands.
+| Command | Description |
+|---------|-------------|
+| `make up` | Starts the Vagrant cluster. |
+| `make down` | Stops the Vagrant cluster properly. |
+| `make provision` | Reprovisions the Vagrant cluster if the scripts have been updated. |
+| `make clean` | Removes the file containing the K3s node token. |
+| `make fclean` | Runs `clean`, then removes the Vagrant virtual machines and cached files. |
+| `make help` | Displays the list of available commands. |
 
 ### Validation
 
