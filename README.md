@@ -8,10 +8,12 @@ The goal of this project is to discover Kubernetes through a progressive approac
 
 It is divided into three main parts and one bonus part:
 
-* **P1** – Build and provision a 2-node K3s cluster with Vagrant.
-* **P2** – Deploy multiple applications using Kubernetes manifests.
-* **P3** – Use K3d and Argo CD to explore continuous deployment.
-* **Bonus** – Local GitLab, Argo CD, and Helm on K3d.
+| Partie | Description |
+|---------|-------------|
+| **P1** | Build and provision a 2-node K3s cluster with Vagrant. |
+| **P2** | Deploy multiple applications using Kubernetes manifests. |
+| **P3** | Use K3d and Argo CD to explore continuous deployment. |
+| **Bonus** |  Local GitLab, Argo CD, and Helm on K3d. |
 
 ## Tech Stack
 
