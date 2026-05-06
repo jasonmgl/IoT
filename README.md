@@ -8,7 +8,7 @@ The goal of this project is to discover Kubernetes through a progressive approac
 
 It is divided into three main parts and one bonus part:
 
-| Partie | Description |
+| Parts | Description |
 |---------|-------------|
 | **P1** | Build and provision a 2-node K3s cluster with Vagrant. |
 | **P2** | Deploy multiple applications using Kubernetes manifests. |
