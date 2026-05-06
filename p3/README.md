@@ -107,6 +107,15 @@ kubectl get pods -n dev
 kubectl get ingress -A
 ```
 
+Expected result:
+
+- The `argocd` and `dev` namespaces should exist.
+- All Pods in the `argocd` namespace should be in the `Running` state.
+- The application Pod in the `dev` namespace should be in the `Running` state.
+- The Ingress resources should be present and correctly exposed.
+- The Argo CD dashboard should be reachable at `http://argocd.local/`.
+- The application deployed by Argo CD should be reachable at `http://jmougel.local/`.
+
 ## Project Structure
 
 ```text
