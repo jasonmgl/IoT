@@ -51,13 +51,15 @@ cd InceptionOfThings/p3
 make up
 ```
 
-Make sure `make` is installed on your system before starting the setup.
+Make sure the following tools are installed on your system:
+
+* Make
 
 Make sure the following entries are present in your `/etc/hosts` file:
 
-```text
-127.0.0.1 argocd.local jmougel.local
-```
+| IP Address | Hosts |
+|------------|-------|
+| `127.0.0.1` | `argocd.local`, `jmougel.local` |
 
 A `.env.sample` file is provided to help customize the local environment.
 
@@ -65,29 +67,12 @@ A `.env.sample` file is provided to help customize the local environment.
 
 A **Makefile** is provided to make the project easier to run. The following commands are available:
 
-```bash
-make re
-```
-
-Runs `make purge` and then `make up`.
-
-```bash
-make up
-```
-
-Installs the required environment for the project and starts the K3d cluster.
-
-```bash
-make purge
-```
-
-Completely removes the tools installed by the setup script and uninstalls Docker from the host machine. Use this command with caution.
-
-```bash
-make help
-```
-
-Displays the list of available commands.
+| Command | Description |
+|---------|-------------|
+| `make re` | Runs `make purge` and then `make up`. |
+| `make up` | Installs the required environment for the project and starts the K3d cluster. |
+| `make purge` | Completely removes the tools installed by the setup script and uninstalls Docker from the host machine. Use this command with caution. |
+| `make help` | Displays the list of available commands. |
 
 ### Dashboard
 
